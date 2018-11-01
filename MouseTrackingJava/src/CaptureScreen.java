@@ -202,7 +202,7 @@ public class CaptureScreen extends JFrame {
 	            int x = (int) pointer.getLocation().getX();
 	            int y = (int) pointer.getLocation().getY();
 	            
-	            
+	            clickPoslbl.setText("(" + x + ", " + y + ")");
 	            if(x != last_x && y != last_y)
 	            {
 	            	trace.add(new int[] {x, y});
