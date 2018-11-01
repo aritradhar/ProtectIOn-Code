@@ -55,6 +55,9 @@ public class SerialCommunication {
 	 * treated as the end of a block in this example.
 	 */
 	
+	public static int currentX = 700;
+	public static int currentY = 700;
+	
 	public static class SerialReader implements SerialPortEventListener {
 		private InputStream in;
 		private byte[] buffer = new byte[1024];
@@ -75,7 +78,12 @@ public class SerialCommunication {
 						break;
 				}	
 				
-				System.out.print(new String(buffer, 0, len));
+				//System.out.print(new String(buffer, 0, len));
+				String captureData = new String(buffer, 0, len);
+				String[] captureDataSplits = captureData.split(",");
+				currentX = currentX + Integer.parseInt(captureDataSplits[1]);
+				currentY = currentY - Integer.parseInt(captureDataSplits[1]);
+				CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);
 				
 			} catch (IOException e) {
 				e.printStackTrace();
