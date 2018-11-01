@@ -35,14 +35,14 @@ public class SerialCommunication {
 				SerialPort serialPort = (SerialPort) commPort;
 				serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
 						SerialPort.PARITY_NONE);
-
+				System.out.println("Connected");
 				InputStream in = serialPort.getInputStream();
 				serialOutputStream = serialPort.getOutputStream();
 
-				//(new Thread(new SerialWriter(serialOutputStream))).start();
-
+				//long start = System.currentTimeMillis();
 				serialPort.addEventListener(new SerialReader(in));
 				serialPort.notifyOnDataAvailable(true);
+				//System.out.println(System.currentTimeMillis() - start);
 
 			} else {
 				System.out.println("Error: Only serial ports are handled by this example.");
@@ -67,16 +67,16 @@ public class SerialCommunication {
 			int data;
 
 			try {
+				
 				int len = 0;
 				while ((data = in.read()) > -1) {
-
-				
 					buffer[len++] = (byte) data;
-					//System.out.println(data);
+					if(data == 10)
+						break;
 				}	
 				
-				System.out.println(new String(buffer));
-
+				System.out.print(new String(buffer, 0, len));
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(-1);
@@ -84,29 +84,6 @@ public class SerialCommunication {
 		}
 	
 	
-	}
-
-
-	/** */
-	public static class SerialWriter implements Runnable {
-		OutputStream out;
-
-		public SerialWriter(OutputStream out) {
-			this.out = out;
-		}
-
-		public void run() {
-			try {
-
-				int c = 0;
-				while ((c = System.in.read()) > -1) {
-					this.out.write(c);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(-1);
-			}
-		}
 	}
 
 	public static void main(String[] args) {
