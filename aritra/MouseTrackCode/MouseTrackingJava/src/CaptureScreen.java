@@ -68,6 +68,14 @@ public class CaptureScreen extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					try {
+						SerialCommunication com = new SerialCommunication();
+						com.connect("COM19");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 					CaptureScreen frame = new CaptureScreen();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -85,6 +93,8 @@ public class CaptureScreen extends JFrame {
 	 * @throws IOException 
 	 * @throws AWTException 
 	 */
+	public static BufferedImage capture = null;
+	public static BufferedImage greenSquare, redSquare;
 	public CaptureScreen() throws IOException, AWTException 
 	{
 		
@@ -105,10 +115,20 @@ public class CaptureScreen extends JFrame {
         int height = gd.getDisplayMode().getHeight();
         Image cursor = ImageIO.read(new File("4871e80dee864d8cc605da971d5b8a3c-2.png"));
         
-        BufferedImage blackSquare = new BufferedImage(20, 20, BufferedImage.TYPE_3BYTE_BGR);
-        for(int i = 0; i < blackSquare.getHeight(); i++){
-            for(int j = 0; j < blackSquare.getWidth(); j++){
-                blackSquare.setRGB(j, i, Color.GREEN.getRGB());
+        int boxSide = 20, thickness = 5;
+        
+        greenSquare = new BufferedImage(boxSide, boxSide, BufferedImage.TYPE_3BYTE_BGR);
+        redSquare = new BufferedImage(boxSide, boxSide, BufferedImage.TYPE_3BYTE_BGR);
+        for(int i = 0; i < boxSide; i++){
+            for(int j = 0; j < boxSide; j++){
+                greenSquare.setRGB(j, i, Color.GREEN.getRGB());
+                
+                if(i < boxSide)
+                	redSquare.setRGB(j, i, Color.RED.getRGB());
+                if((i >= boxSide && j < thickness) || (i >= boxSide && j > boxSide - thickness))
+                	redSquare.setRGB(j, i, Color.RED.getRGB());
+                if(i > boxSide - thickness)
+                	redSquare.setRGB(j, i, Color.RED.getRGB());
             }
         }
         PointerInfo pointer = MouseInfo.getPointerInfo();
@@ -169,7 +189,7 @@ public class CaptureScreen extends JFrame {
 				
 				long start = System.currentTimeMillis();		
 				
-		        BufferedImage capture = null;
+		        
 				try {
 					capture = new Robot().createScreenCapture(screenRect);
 				} catch (AWTException e1) {
@@ -179,11 +199,11 @@ public class CaptureScreen extends JFrame {
 				
 				
 	            for(int[] tracePoint : trace)
-	            	capture.getGraphics().drawImage(blackSquare, tracePoint[0], tracePoint[1], null);
+	            	capture.getGraphics().drawImage(greenSquare, tracePoint[0], tracePoint[1], null);
 	            
 	            
 	            //capture.getGraphics().drawImage(blackSquare, x, y, null);
-	            capture.getGraphics().drawImage(cursor, x, y, null);
+	            //capture.getGraphics().drawImage(cursor, x, y, null);
 	            
 	            //capture.getGraphics().drawString(x + " : " + y, x, y);
 	            //System.out.println(x + ":" + y);
