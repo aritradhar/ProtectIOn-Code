@@ -28,13 +28,21 @@ public class SerialCommunicationLinux {
 			while((str = br.readLine()) != null)
 			{
 				String[] captureDataSplits = str.split(",");
-				currentX = currentX + Integer.parseInt(captureDataSplits[1]);
-				currentY = currentY - Integer.parseInt(captureDataSplits[1]);
-				CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);
+				if(captureDataSplits.length == 3)
+				{
+					int x = Integer.parseInt(captureDataSplits[0]);
+					int y = Integer.parseInt(captureDataSplits[1]);
+					currentX = currentX + x;
+					currentY = currentY + y;
+					CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);
+					
+					System.out.println(currentX + ", " + currentY + " | " + x + ", " + y);
+				}
 			}
 		} catch (IOException e) {
 			
 			e.printStackTrace();
+			//System.exit(0);
 		}
 		return str;
 	}
