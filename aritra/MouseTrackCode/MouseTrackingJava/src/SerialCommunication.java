@@ -73,17 +73,18 @@ public class SerialCommunication {
 				
 				int len = 0;
 				while ((data = in.read()) > -1) {
-					buffer[len++] = (byte) data;
-					if(data == 10)
-						break;
+					buffer[len++] = (byte) data;	
 				}	
 				
 				//System.out.print(new String(buffer, 0, len));
 				String captureData = new String(buffer, 0, len);
 				String[] captureDataSplits = captureData.split(",");
-				currentX = currentX + Integer.parseInt(captureDataSplits[1]);
-				currentY = currentY - Integer.parseInt(captureDataSplits[1]);
-				CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);
+				int x = Integer.parseInt(captureDataSplits[0]);
+				int y = Integer.parseInt(captureDataSplits[1]);
+				currentX = currentX + x;
+				currentY = currentY + y;
+				System.out.println(currentX + ", " + currentY + " | " + x + ", " + y);
+				CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentY, currentX, null);
 				
 			} catch (IOException e) {
 				e.printStackTrace();
