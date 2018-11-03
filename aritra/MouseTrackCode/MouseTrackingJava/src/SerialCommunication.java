@@ -79,8 +79,8 @@ public class SerialCommunication {
 				//System.out.print(new String(buffer, 0, len));
 				String captureData = new String(buffer, 0, len);
 				String[] captureDataSplits = captureData.split(",");
-				int x = Integer.parseInt(captureDataSplits[0]);
-				int y = Integer.parseInt(captureDataSplits[1]);
+				int x = Integer.parseInt(captureDataSplits[1]);
+				int y = Integer.parseInt(captureDataSplits[2]);
 				currentX = currentX + x;
 				currentY = currentY + y;
 				System.out.println(currentX + ", " + currentY + " | " + x + ", " + y);

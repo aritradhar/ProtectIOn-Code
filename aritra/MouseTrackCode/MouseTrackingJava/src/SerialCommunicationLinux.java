@@ -30,8 +30,8 @@ public class SerialCommunicationLinux {
 				String[] captureDataSplits = str.split(",");
 				if(captureDataSplits.length == 3)
 				{
-					int x = Integer.parseInt(captureDataSplits[0]);
-					int y = Integer.parseInt(captureDataSplits[1]);
+					int x = Integer.parseInt(captureDataSplits[1]);
+					int y = Integer.parseInt(captureDataSplits[2]);
 					currentX = currentX + x;
 					currentY = currentY + y;
 					CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);
