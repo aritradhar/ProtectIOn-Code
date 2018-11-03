@@ -235,23 +235,26 @@ public class CaptureScreen extends JFrame {
 
 				frames = frames + 1;
 				framelbl.setText(frames.toString());
-				PointerInfo pointer = MouseInfo.getPointerInfo();
-				int x = (int) pointer.getLocation().getX();
-				int y = (int) pointer.getLocation().getY();
-
-				clickPoslbl.setText("(" + x + ", " + y + ")");
-				if(x != last_x && y != last_y)
-				{
-					trace.add(new int[] {x, y});
-					last_x = x;
-					last_y = y;
-					mouseFrames++;
-					mouselbl.setText(mouseFrames.toString());
-				}
-
-
-				//System.out.println(System.currentTimeMillis() - start);
-				//System.out.println("Update");
+		        PointerInfo pointer = MouseInfo.getPointerInfo();
+	            int x = (int) pointer.getLocation().getX();
+	            int y = (int) pointer.getLocation().getY();
+	            
+	            clickPoslbl.setText("(" + x + ", " + y + ")");
+	            if(x != last_x && y != last_y)
+	            {
+	            	trace.add(new int[] {x, y});
+	            	System.out.println("Screen diff:" + (x - last_x) + ", " + (y - last_y));
+	            	last_x = x;
+	            	last_y = y;
+	            	
+	            	
+	            	mouseFrames++;
+	            	mouselbl.setText(mouseFrames.toString());
+	            }
+	            
+		        
+		        //System.out.println(System.currentTimeMillis() - start);
+		        //System.out.println("Update");
 			}
 
 		};
