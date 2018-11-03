@@ -111,6 +111,7 @@ public class CaptureScreen extends JFrame {
 	 * @throws AWTException 
 	 */
 	public static BufferedImage capture = null;
+	public static Integer curr_x = null, curr_y = null;
 	public static BufferedImage greenSquare, redSquare;
 	public CaptureScreen() throws IOException, AWTException 
 	{
@@ -166,7 +167,7 @@ public class CaptureScreen extends JFrame {
 		JLabel lblCurrentPosition = new JLabel("Current position");
 		panel.add(lblCurrentPosition);
 
-		JLabel currentPoslbl = new JLabel("New label");
+		JLabel currentPoslbl = new JLabel("(0, 0)");
 		panel.add(currentPoslbl);
 
 		JLabel lblStartPosition = new JLabel("Start Position");
@@ -227,6 +228,8 @@ public class CaptureScreen extends JFrame {
 
 				ImageIcon image = new ImageIcon(capture);
 				label.setIcon(image);
+				curr_x = x;
+				curr_y = y;
 				currentPoslbl.setText(x + ", " + y);
 				repaint();
 

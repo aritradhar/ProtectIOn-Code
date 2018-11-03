@@ -28,7 +28,8 @@ public class SerialCommunicationLinux {
 			while((str = br.readLine()) != null)
 			{
 				String[] captureDataSplits = str.split(",");
-				if(captureDataSplits.length == 3)
+				//wait for the capture initialized by the other thread
+				if(captureDataSplits.length == 3 && CaptureScreen.capture != null)
 				{
 					int x = Integer.parseInt(captureDataSplits[1]);
 					int y = Integer.parseInt(captureDataSplits[2]);
