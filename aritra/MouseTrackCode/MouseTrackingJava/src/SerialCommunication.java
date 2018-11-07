@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
@@ -58,6 +59,8 @@ public class SerialCommunication {
 	public static Integer currentX = null;
 	public static Integer currentY = null;
 	
+	public static ArrayList<int[]> trace = new ArrayList<>();
+	
 	public static class SerialReader implements SerialPortEventListener {
 		private InputStream in;
 		private byte[] buffer = new byte[1024];
@@ -68,7 +71,7 @@ public class SerialCommunication {
 
 		public void serialEvent(SerialPortEvent arg0) {
 			int data;
-
+			int oldX = -100, oldY = -100;
 			try {
 				
 				int len = 0;
@@ -89,8 +92,18 @@ public class SerialCommunication {
 				}
 				currentX = currentX + x;
 				currentY = currentY + y;
-				System.out.println(currentX + ", " + currentY + " | " + x + ", " + y);
-				CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentY, currentX, null);
+				
+				
+				if(oldX != currentX || oldY != currentY)
+				{
+					trace.add(new int[] {currentX, currentY});
+					System.out.println(currentX + ", " + currentY + " | " + x + ", " + y);
+					
+					for(int[] tracePoint : trace)
+						CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, tracePoint[0], tracePoint[1], null);
+					oldX = currentX;
+					oldY = currentY;
+				}
 				
 			} catch (IOException e) {
 				e.printStackTrace();
