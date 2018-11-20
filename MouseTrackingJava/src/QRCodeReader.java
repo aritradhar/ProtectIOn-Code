@@ -42,15 +42,14 @@ public class QRCodeReader {
     }
     
     
-    public static ResultPoint[] decodeQRCode(BufferedImage bufferedImage) throws IOException {
+    public static Result decodeQRCode(BufferedImage bufferedImage) throws IOException {
         LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
         BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
         
 
         try {
             Result result = new MultiFormatReader().decode(bitmap);
-            ResultPoint[] points = result.getResultPoints();
-            return points;
+            return result;
         } catch (NotFoundException e) {
             //System.out.println("There is no QR code in the image");
             return null;

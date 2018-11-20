@@ -3,6 +3,7 @@ import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
@@ -28,6 +29,10 @@ import java.awt.Dialog.ModalExclusionType;
 import java.awt.Dimension;
 
 import javax.swing.UIManager;
+
+import com.google.zxing.Result;
+import com.google.zxing.ResultPoint;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.AWTEventListener;
@@ -89,7 +94,7 @@ public class CaptureScreen extends JFrame {
 							com.connect("COM19");
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+							System.err.println("Relayless mode");
 						}
 					}
 
@@ -210,7 +215,14 @@ public class CaptureScreen extends JFrame {
 
 				try {
 					capture = new Robot().createScreenCapture(screenRect);
-				} catch (AWTException e1) {
+					Result result = QRCodeReader.decodeQRCode(capture);
+					
+					if(result != null)
+					{
+						ResultPoint[] points = result.getResultPoints();
+						capture.getGraphics().drawString(result.getText(), (int) points[0].getX(), (int) points[0].getY() + 15);
+					}
+				} catch (AWTException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
