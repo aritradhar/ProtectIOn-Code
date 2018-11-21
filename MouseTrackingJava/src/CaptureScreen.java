@@ -3,7 +3,6 @@ import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
@@ -11,7 +10,6 @@ import java.awt.MouseInfo;
 import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.Robot;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,10 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import java.awt.Dialog.ModalExclusionType;
 import java.awt.Dimension;
-
-import javax.swing.UIManager;
 
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
@@ -37,7 +32,6 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTextPane;
 
 
 //*************************************************************************************
@@ -71,6 +65,7 @@ public class CaptureScreen extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = -725074386379024683L;
+	@SuppressWarnings("unused")
 	private JPanel contentPane;
 	public static ArrayList<int[]> trace = new ArrayList<>();
 
@@ -93,7 +88,6 @@ public class CaptureScreen extends JFrame {
 							SerialCommunication com = new SerialCommunication();
 							com.connect("COM19");
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
 							System.err.println("Relayless mode");
 						}
 					}
@@ -119,11 +113,24 @@ public class CaptureScreen extends JFrame {
 	public static boolean firstRun = true; 
 	public static Integer curr_x = null, curr_y = null;
 	public static BufferedImage greenSquare, redSquare;
+
+	
+	public static BufferedImage makeRectangle(int w, int h)
+	{
+		BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_3BYTE_BGR);
+		for(int i = 0; i < w; i++){
+			for(int j = 0; j < h; j++){
+				bi.setRGB(i, j, Color.GRAY.getRGB());
+			}
+		}
+		return bi;
+	}
+	
+	@SuppressWarnings("unused")
 	public static JLabel relayPoslbl;
+
 	public CaptureScreen() throws IOException, AWTException 
 	{
-
-
 		setSize(1000, 750);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Mirror");
@@ -132,7 +139,6 @@ public class CaptureScreen extends JFrame {
 		final String USER_HOME = System.getProperty("user.home");
 		//Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
 		Rectangle screenRect = new Rectangle(new Dimension(1920, 1080));
-
 		//Dimension d = new Dimension(1280, 720);
 
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -144,8 +150,10 @@ public class CaptureScreen extends JFrame {
 
 		greenSquare = new BufferedImage(boxSide, boxSide, BufferedImage.TYPE_3BYTE_BGR);
 		redSquare = new BufferedImage(boxSide, boxSide, BufferedImage.TYPE_3BYTE_BGR);
-		for(int i = 0; i < boxSide; i++){
-			for(int j = 0; j < boxSide; j++){
+		for(int i = 0; i < boxSide; i++)
+		{
+			for(int j = 0; j < boxSide; j++)
+			{
 				greenSquare.setRGB(j, i, Color.GREEN.getRGB());
 
 				if(i < boxSide)
@@ -216,8 +224,8 @@ public class CaptureScreen extends JFrame {
 		Runnable myRunnable = new Runnable() {
 
 			@Override
-			public void run() {
-
+			public void run() 
+			{
 				if(firstRun)
 				{
 					firstRun = false;
@@ -226,7 +234,6 @@ public class CaptureScreen extends JFrame {
 				}
 				long start = System.currentTimeMillis();		
 				
-
 				try {
 					capture = new Robot().createScreenCapture(screenRect);
 					Result result = QRCodeReader.decodeQRCode(capture);
@@ -234,17 +241,20 @@ public class CaptureScreen extends JFrame {
 					if(result != null)
 					{
 						ResultPoint[] points = result.getResultPoints();
-						capture.getGraphics().drawString(result.getText(), (int) points[0].getX(), (int) points[0].getY() + 15);
+						//capture.getGraphics().drawString(result.getText(), (int) points[1].getX(), (int) points[1].getY() + 15);
+						int h = (int) points[0].getY() - (int) points[1].getY();
+						int w = (int) points[2].getX() - (int) points[1].getX();
+						capture.getGraphics().drawImage(
+								makeRectangle(h,w), 
+										(int) points[1].getX(), (int) points[1].getY(), null);
 					}
 				} catch (AWTException | IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
 
 				for(int[] tracePoint : trace)
 					capture.getGraphics().drawImage(greenSquare, tracePoint[0], tracePoint[1], null);
-
 
 				//capture.getGraphics().drawImage(blackSquare, x, y, null);
 				//capture.getGraphics().drawImage(cursor, x, y, null);
@@ -262,7 +272,7 @@ public class CaptureScreen extends JFrame {
 				Long t =  1000 / (System.currentTimeMillis() - start);
 				fpslbl.setText(t.toString());
 
-				frames = frames + 1;
+				frames++;
 				framelbl.setText(frames.toString());
 		        PointerInfo pointer = MouseInfo.getPointerInfo();
 	            int x = (int) pointer.getLocation().getX();
@@ -275,21 +285,12 @@ public class CaptureScreen extends JFrame {
 	            	System.out.println("Screen diff:" + (x - last_x) + ", " + (y - last_y));
 	            	last_x = x;
 	            	last_y = y;
-	            	
-	            	
+	            		            	
 	            	mouseFrames++;
 	            	mouselbl.setText(mouseFrames.toString());
-	            }
-	            
-		        
-		        //System.out.println(System.currentTimeMillis() - start);
-		        //System.out.println("Update");
+	            }	        
 			}
-
 		};
-
-
-
 
 
 		btnReset.addActionListener(new ActionListener() {

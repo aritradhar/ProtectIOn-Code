@@ -39,6 +39,7 @@ public class KeyGen {
 		
 		System.out.println(Base64.getEncoder().encodeToString(pk));
 		
+		
 		QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(Base64.getEncoder().encodeToString(pk), BarcodeFormat.QR_CODE, 250, 250);
 
