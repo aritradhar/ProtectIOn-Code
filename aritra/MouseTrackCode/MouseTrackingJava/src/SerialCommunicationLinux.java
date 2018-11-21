@@ -18,8 +18,8 @@ public class SerialCommunicationLinux {
 		}
 	}
 	
-	public static int currentX = 100;
-	public static int currentY = 100;
+	public static int currentX;
+	public static int currentY;
 	
 	public static String readData()
 	{
@@ -31,10 +31,24 @@ public class SerialCommunicationLinux {
 				//wait for the capture initialized by the other thread
 				if(captureDataSplits.length == 3 && CaptureScreen.capture != null)
 				{
+					CaptureScreen.relayPoslbl.setText("(" + currentX + ", " + currentY + ")");
 					int x = Integer.parseInt(captureDataSplits[1]);
 					int y = Integer.parseInt(captureDataSplits[2]);
-					currentX = currentX + x;
-					currentY = currentY + y;
+					
+					if(currentX + x >= 0 && currentX + x <= ENV.SCREEN_X)
+						currentX = currentX + x;
+					else if(currentX + x < 0)
+						currentX = 0;
+					else 
+						currentX = ENV.SCREEN_X;
+					
+					if(currentY + y >= 0 && currentY + y <= ENV.SCREEN_Y)
+						currentY = currentY + y;
+					else if(currentY + y < 0)
+						currentY = 0;
+					else
+						currentY = ENV.SCREEN_Y;
+					
 					CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);
 					
 					System.out.println(currentX + ", " + currentY + " | " + x + ", " + y);
