@@ -116,8 +116,10 @@ public class CaptureScreen extends JFrame {
 	 * @throws AWTException 
 	 */
 	public static BufferedImage capture = null;
+	public static boolean firstRun = true; 
 	public static Integer curr_x = null, curr_y = null;
 	public static BufferedImage greenSquare, redSquare;
+	public static JLabel relayPoslbl;
 	public CaptureScreen() throws IOException, AWTException 
 	{
 
@@ -169,19 +171,25 @@ public class CaptureScreen extends JFrame {
 		JButton btnReset = new JButton("Reset");
 		panel.add(btnReset);
 
-		JLabel lblCurrentPosition = new JLabel("Current position");
-		panel.add(lblCurrentPosition);
+		//JLabel lblCurrentPosition = new JLabel("Current position");
+		//panel.add(lblCurrentPosition);
 
-		JLabel currentPoslbl = new JLabel("(0, 0)");
-		panel.add(currentPoslbl);
+		//JLabel currentPoslbl = new JLabel("(0, 0)");
+		//panel.add(currentPoslbl);
 
-		JLabel lblStartPosition = new JLabel("Start Position");
-		panel.add(lblStartPosition);
+		//JLabel lblStartPosition = new JLabel("Start Position");
+		//panel.add(lblStartPosition);
 
 		JLabel startPoslbl = new JLabel(x + ", " + y);
 		panel.add(startPoslbl);
 
-		JLabel lblClickPosition = new JLabel("Click position");
+		JLabel lblRelayMousePosition = new JLabel("Relay pos: ");
+		panel.add(lblRelayMousePosition);
+		
+		CaptureScreen.relayPoslbl = new JLabel("(0,0)");
+		panel.add(CaptureScreen.relayPoslbl);
+		
+		JLabel lblClickPosition = new JLabel("Host pos: ");
 		panel.add(lblClickPosition);
 
 		JLabel clickPoslbl = new JLabel("(0,0)");
@@ -210,8 +218,14 @@ public class CaptureScreen extends JFrame {
 			@Override
 			public void run() {
 
+				if(firstRun)
+				{
+					firstRun = false;
+					SerialCommunicationLinux.currentX = x;
+					SerialCommunicationLinux.currentY = y;
+				}
 				long start = System.currentTimeMillis();		
-
+				
 
 				try {
 					capture = new Robot().createScreenCapture(screenRect);
@@ -242,7 +256,7 @@ public class CaptureScreen extends JFrame {
 				label.setIcon(image);
 				curr_x = x;
 				curr_y = y;
-				currentPoslbl.setText(x + ", " + y);
+				//currentPoslbl.setText(x + ", " + y);
 				repaint();
 
 				Long t =  1000 / (System.currentTimeMillis() - start);
