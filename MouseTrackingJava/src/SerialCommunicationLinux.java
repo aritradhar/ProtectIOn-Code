@@ -54,6 +54,13 @@ public class SerialCommunicationLinux {
 					CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);
 					
 					System.out.println(currentX + ", " + currentY + " | " + x + ", " + y);
+					
+					if(currentX > CaptureScreen.OVERLAY_X && currentX < CaptureScreen.OVERLAY_X + CaptureScreen.OVERLAY_W &&
+							currentY > CaptureScreen.OVERLAY_Y && currentY < CaptureScreen.OVERLAY_Y + CaptureScreen.OVERLAY_H )
+					
+						CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.blueSquare, currentX, currentY, null);
+					else
+						CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);
 				}
 				//press
 				if(captureDataSplits.length == 2 && CaptureScreen.capture != null)
