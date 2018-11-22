@@ -7,24 +7,28 @@
 	{
 		"type":"radio",
 		"label":"option A",
+		"size": 40,
 		"enable": "false"
 	},	
 	{
 		"type":"radio",
 		"label":"option B",
-		"enable": "false"
-	}
+		"size": 40,
+		"enable": "true"
+	},
 	
 	{
 		"type":"button",
 		"label":"OK",
+		"size": 10,
 		"enable": "false"
-	}
+	},
 	
 	{
 		"type":"button",
 		"label":"Cancel",
-		"enable": "false"
+		"enable": "false",
+		"size": 10,
 	}
 	
 	]
