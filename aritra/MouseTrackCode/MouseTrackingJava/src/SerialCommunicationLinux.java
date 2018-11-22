@@ -10,7 +10,7 @@ public class SerialCommunicationLinux {
 	public static boolean initialize() {
 		
 		try {
-			br = new BufferedReader(new FileReader("/dev/ttyUSB0"));
+			br = new BufferedReader(new FileReader("/dev/ttyUSB1"));
 			return true;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -27,8 +27,10 @@ public class SerialCommunicationLinux {
 		try {
 			while((str = br.readLine()) != null)
 			{
+				//System.out.println(str);
 				String[] captureDataSplits = str.split(",");
 				//wait for the capture initialized by the other thread
+				//move and drag
 				if(captureDataSplits.length == 3 && CaptureScreen.capture != null)
 				{
 					CaptureScreen.relayPoslbl.setText("(" + currentX + ", " + currentY + ")");
@@ -52,6 +54,16 @@ public class SerialCommunicationLinux {
 					CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);
 					
 					System.out.println(currentX + ", " + currentY + " | " + x + ", " + y);
+				}
+				//press
+				if(captureDataSplits.length == 2 && CaptureScreen.capture != null)
+				{
+					int activity = Integer.parseInt(captureDataSplits[0]);
+					String button = captureDataSplits[1];
+					
+					
+					String activityString = (activity == 0) ? "press" : "release";
+					System.out.println("Activity : " + button + " : " + activityString + " @ " +  currentX + ", " + currentY);
 				}
 			}
 		} catch (IOException e) {
