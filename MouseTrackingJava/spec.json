@@ -1,0 +1,31 @@
+{
+	"formId": "form1",
+	"formName": "form1",
+	"sizeH": 500,
+	"sizeW": 500,
+	"ui": [
+	{
+		"type":"radio",
+		"label":"option A",
+		"enable": "false"
+	},	
+	{
+		"type":"radio",
+		"label":"option B",
+		"enable": "false"
+	}
+	
+	{
+		"type":"button",
+		"label":"OK",
+		"enable": "false"
+	}
+	
+	{
+		"type":"button",
+		"label":"Cancel",
+		"enable": "false"
+	}
+	
+	]
+}
