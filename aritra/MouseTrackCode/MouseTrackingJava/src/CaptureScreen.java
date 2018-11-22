@@ -63,6 +63,14 @@ class SerialReaderThread extends Thread{
 	}
 }
 
+
+class SerialReaderThreadWindows extends Thread{
+	public void run() {
+		SerialCommunicationLinux.initialize();
+		SerialCommunicationLinux.readData();
+	}
+}
+
 public class CaptureScreen extends JFrame {
 
 	/**
