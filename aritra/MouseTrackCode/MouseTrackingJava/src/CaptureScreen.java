@@ -81,6 +81,8 @@ public class CaptureScreen extends JFrame {
 	private JPanel contentPane;
 	public static ArrayList<int[]> trace = new ArrayList<>();
 	public static boolean selectedTrace = false;
+	
+	public static int OVERLAY_X, OVERLAY_Y, OVERLAY_H, OVERLAY_W;
 	/**
 	 * Launch the application.
 	 */
@@ -124,7 +126,7 @@ public class CaptureScreen extends JFrame {
 	public static BufferedImage capture = null;
 	public static boolean firstRun = true; 
 	public static Integer curr_x = null, curr_y = null;
-	public static BufferedImage greenSquare, redSquare;
+	public static BufferedImage greenSquare, redSquare, blueSquare;
 
 
 	public static BufferedImage makeRectangle(int w, int h)
@@ -161,11 +163,13 @@ public class CaptureScreen extends JFrame {
 
 		greenSquare = new BufferedImage(boxSide, boxSide, BufferedImage.TYPE_3BYTE_BGR);
 		redSquare = new BufferedImage(boxSide, boxSide, BufferedImage.TYPE_3BYTE_BGR);
+		blueSquare = new BufferedImage(boxSide, boxSide, BufferedImage.TYPE_3BYTE_BGR);
 		for(int i = 0; i < boxSide; i++)
 		{
 			for(int j = 0; j < boxSide; j++)
 			{
 				greenSquare.setRGB(j, i, Color.GREEN.getRGB());
+				blueSquare.setRGB(j, i, Color.BLUE.getRGB());
 
 				if(i < boxSide)
 					redSquare.setRGB(j, i, Color.RED.getRGB());
@@ -265,6 +269,11 @@ public class CaptureScreen extends JFrame {
 						if(fileToRead.exists())
 						{
 							BufferedImage retrievedImage = ImageIO.read(fileToRead);
+							OVERLAY_X = (int) points[1].getX();
+							OVERLAY_Y = (int) points[1].getY();
+							OVERLAY_H = retrievedImage.getHeight();
+							OVERLAY_W = retrievedImage.getWidth();
+							
 							capture.getGraphics().drawImage(
 									retrievedImage, 
 									(int) points[1].getX(), (int) points[1].getY(), null);
