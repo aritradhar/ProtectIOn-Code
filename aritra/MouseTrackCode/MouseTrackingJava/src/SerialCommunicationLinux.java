@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class SerialCommunicationLinux {
 	
 	public static int currentX;
 	public static int currentY;
+	public static boolean INSIDE_OVERLAY = false;
 	
 	public static String readData()
 	{
@@ -38,7 +40,7 @@ public class SerialCommunicationLinux {
 					int y = Integer.parseInt(captureDataSplits[2]);
 					
 					if(currentX + x >= 0 && currentX + x <= ENV.SCREEN_X)
-						currentX = currentX + x;
+						currentX = currentX +  x;
 					else if(currentX + x < 0)
 						currentX = 0;
 					else 
@@ -57,10 +59,15 @@ public class SerialCommunicationLinux {
 					
 					if(currentX > CaptureScreen.OVERLAY_X && currentX < CaptureScreen.OVERLAY_X + CaptureScreen.OVERLAY_W &&
 							currentY > CaptureScreen.OVERLAY_Y && currentY < CaptureScreen.OVERLAY_Y + CaptureScreen.OVERLAY_H )
-					
+					{
 						CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.blueSquare, currentX, currentY, null);
+						INSIDE_OVERLAY = true;
+					}
 					else
+					{
 						CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);
+						INSIDE_OVERLAY = false;
+					}
 				}
 				//press
 				if(captureDataSplits.length == 2 && CaptureScreen.capture != null)
@@ -68,9 +75,13 @@ public class SerialCommunicationLinux {
 					int activity = Integer.parseInt(captureDataSplits[0]);
 					String button = captureDataSplits[1];
 					
-					
 					String activityString = (activity == 0) ? "press" : "release";
-					System.out.println("Activity : " + button + " : " + activityString + " @ " +  currentX + ", " + currentY);
+					System.out.println("Activity : " + button + " : " + activityString + " @ " +  currentX + ", " + currentY + " inside overlay : " + INSIDE_OVERLAY);
+					
+					if(INSIDE_OVERLAY)
+					{
+						CaptureScreen.CURRENT_OVERLAY_STATE = new File("2.jpg");
+					}
 				}
 			}
 		} catch (IOException e) {

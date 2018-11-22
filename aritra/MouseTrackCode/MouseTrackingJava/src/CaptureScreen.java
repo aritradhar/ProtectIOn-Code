@@ -81,7 +81,7 @@ public class CaptureScreen extends JFrame {
 	private JPanel contentPane;
 	public static ArrayList<int[]> trace = new ArrayList<>();
 	public static boolean selectedTrace = false;
-	
+	public static File CURRENT_OVERLAY_STATE = null;
 	public static int OVERLAY_X, OVERLAY_Y, OVERLAY_H, OVERLAY_W;
 	/**
 	 * Launch the application.
@@ -268,7 +268,10 @@ public class CaptureScreen extends JFrame {
 						File fileToRead = new File(decodedText);
 						if(fileToRead.exists())
 						{
-							BufferedImage retrievedImage = ImageIO.read(fileToRead);
+							if(CURRENT_OVERLAY_STATE == null)						
+								CURRENT_OVERLAY_STATE = fileToRead;
+							
+							BufferedImage retrievedImage = ImageIO.read(CURRENT_OVERLAY_STATE);
 							OVERLAY_X = (int) points[1].getX();
 							OVERLAY_Y = (int) points[1].getY();
 							OVERLAY_H = retrievedImage.getHeight();
