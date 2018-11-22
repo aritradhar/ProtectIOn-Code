@@ -1,5 +1,7 @@
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
@@ -75,21 +77,35 @@ public class SerialCommunication {
 			try {
 				
 				int len = 0;
-				while ((data = in.read()) > -1) {
-					buffer[len++] = (byte) data;	
-				}	
+				BufferedReader br = new BufferedReader(new InputStreamReader(in));
+				
+				
+				//while ((data = in.read()) > -1) {
+				//	buffer[len++] = (byte) data;	
+				//}	
 				
 				//System.out.print(new String(buffer, 0, len));
-				String captureData = new String(buffer, 0, len);
-				String[] captureDataSplits = captureData.split(",");
-				int x = Integer.parseInt(captureDataSplits[1]);
-				int y = Integer.parseInt(captureDataSplits[2]);
+				//String captureData = new String(buffer, 0, len);
+				String captureData = null;
+				while((captureData = br.readLine())!=null)
+				{
+					
+				}
 				
+				String[] captureDataSplits = captureData.split(",");
+				
+				
+				
+				System.out.print(new String(buffer, 0, len));
 				if(currentX == null && currentY == null)
 				{
 					currentX = CaptureScreen.curr_x;
 					currentY = CaptureScreen.curr_y;
 				}
+				
+				
+				Integer x = Integer.valueOf(captureDataSplits[1]);
+				Integer y = Integer.valueOf(captureDataSplits[2]);
 				currentX = currentX + x;
 				currentY = currentY + y;
 				
