@@ -1,3 +1,4 @@
+package app;
 /*
  * SerialPortTest.java
  *
