@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.processing.SupportedSourceVersion;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -30,8 +31,11 @@ import com.google.zxing.ResultPoint;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
 
 
 //*************************************************************************************
@@ -53,10 +57,10 @@ import java.awt.event.ActionEvent;
  */
 
 class SerialReaderThread extends Thread{
-	  public void run() {
-		  SerialCommunicationLinux.initialize();
-			SerialCommunicationLinux.readData();
-	  }
+	public void run() {
+		SerialCommunicationLinux.initialize();
+		SerialCommunicationLinux.readData();
+	}
 }
 
 public class CaptureScreen extends JFrame {
@@ -68,7 +72,7 @@ public class CaptureScreen extends JFrame {
 	@SuppressWarnings("unused")
 	private JPanel contentPane;
 	public static ArrayList<int[]> trace = new ArrayList<>();
-
+	public static boolean selectedTrace = false;
 	/**
 	 * Launch the application.
 	 */
@@ -76,7 +80,7 @@ public class CaptureScreen extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					
+
 					if(System.getProperty("os.name").contains("Linux") || System.getProperty("os.name").contains("linux"))
 					{
 						SerialReaderThread th = new SerialReaderThread();
@@ -114,7 +118,7 @@ public class CaptureScreen extends JFrame {
 	public static Integer curr_x = null, curr_y = null;
 	public static BufferedImage greenSquare, redSquare;
 
-	
+
 	public static BufferedImage makeRectangle(int w, int h)
 	{
 		BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_3BYTE_BGR);
@@ -125,8 +129,7 @@ public class CaptureScreen extends JFrame {
 		}
 		return bi;
 	}
-	
-	@SuppressWarnings("unused")
+
 	public static JLabel relayPoslbl;
 
 	public CaptureScreen() throws IOException, AWTException 
@@ -146,7 +149,7 @@ public class CaptureScreen extends JFrame {
 		int height = gd.getDisplayMode().getHeight();
 		Image cursor = ImageIO.read(new File("4871e80dee864d8cc605da971d5b8a3c-2.png"));
 
-		int boxSide = 20, thickness = 5;
+		int boxSide = 10, thickness = 5;
 
 		greenSquare = new BufferedImage(boxSide, boxSide, BufferedImage.TYPE_3BYTE_BGR);
 		redSquare = new BufferedImage(boxSide, boxSide, BufferedImage.TYPE_3BYTE_BGR);
@@ -176,6 +179,9 @@ public class CaptureScreen extends JFrame {
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.NORTH);
 
+		JCheckBox chckbxNewCheckBox = new JCheckBox("enableTrace");
+		panel.add(chckbxNewCheckBox);
+
 		JButton btnReset = new JButton("Reset");
 		panel.add(btnReset);
 
@@ -193,10 +199,10 @@ public class CaptureScreen extends JFrame {
 
 		JLabel lblRelayMousePosition = new JLabel("Relay pos: ");
 		panel.add(lblRelayMousePosition);
-		
+
 		CaptureScreen.relayPoslbl = new JLabel("(0,0)");
 		panel.add(CaptureScreen.relayPoslbl);
-		
+
 		JLabel lblClickPosition = new JLabel("Host pos: ");
 		panel.add(lblClickPosition);
 
@@ -233,28 +239,65 @@ public class CaptureScreen extends JFrame {
 					SerialCommunicationLinux.currentY = y;
 				}
 				long start = System.currentTimeMillis();		
-				
+
 				try {
 					capture = new Robot().createScreenCapture(screenRect);
+
 					Result result = QRCodeReader.decodeQRCode(capture);
-					
+					//
 					if(result != null)
 					{
+						String decodedText = result.getText();
 						ResultPoint[] points = result.getResultPoints();
 						//capture.getGraphics().drawString(result.getText(), (int) points[1].getX(), (int) points[1].getY() + 15);
 						int h = (int) points[0].getY() - (int) points[1].getY();
 						int w = (int) points[2].getX() - (int) points[1].getX();
-						capture.getGraphics().drawImage(
-								makeRectangle(h,w), 
-										(int) points[1].getX(), (int) points[1].getY(), null);
+
+						File fileToRead = new File(decodedText);
+						if(fileToRead.exists())
+						{
+							BufferedImage retrievedImage = ImageIO.read(fileToRead);
+							capture.getGraphics().drawImage(
+									retrievedImage, 
+									(int) points[1].getX(), (int) points[1].getY(), null);
+						}
+						else
+							capture.getGraphics().drawImage(
+									makeRectangle(h,w), 
+									(int) points[1].getX(), (int) points[1].getY(), null);
+
 					}
+
 				} catch (AWTException | IOException e1) {
 					e1.printStackTrace();
 				}
 
+				chckbxNewCheckBox.addItemListener(new ItemListener() {
 
-				for(int[] tracePoint : trace)
-					capture.getGraphics().drawImage(greenSquare, tracePoint[0], tracePoint[1], null);
+					@Override
+					public void itemStateChanged(ItemEvent e) {
+						if(e.getStateChange() == ItemEvent.SELECTED)
+						{
+							selectedTrace = true;
+							trace = new ArrayList<>();
+						}
+						else
+							selectedTrace = false;
+					}
+				});
+
+				PointerInfo pointer = MouseInfo.getPointerInfo();
+				int x = (int) pointer.getLocation().getX();
+				int y = (int) pointer.getLocation().getY();
+
+				if(selectedTrace)
+				{
+					for(int[] tracePoint : trace)
+						capture.getGraphics().drawImage(greenSquare, tracePoint[0], tracePoint[1], null);
+				}
+
+				capture.getGraphics().drawImage(greenSquare, x, y, null);
+
 
 				//capture.getGraphics().drawImage(blackSquare, x, y, null);
 				//capture.getGraphics().drawImage(cursor, x, y, null);
@@ -274,21 +317,20 @@ public class CaptureScreen extends JFrame {
 
 				frames++;
 				framelbl.setText(frames.toString());
-		        PointerInfo pointer = MouseInfo.getPointerInfo();
-	            int x = (int) pointer.getLocation().getX();
-	            int y = (int) pointer.getLocation().getY();
-	            
-	            clickPoslbl.setText("(" + x + ", " + y + ")");
-	            if(x != last_x && y != last_y)
-	            {
-	            	trace.add(new int[] {x, y});
-	            	System.out.println("Screen diff:" + (x - last_x) + ", " + (y - last_y));
-	            	last_x = x;
-	            	last_y = y;
-	            		            	
-	            	mouseFrames++;
-	            	mouselbl.setText(mouseFrames.toString());
-	            }	        
+
+
+				clickPoslbl.setText("(" + x + ", " + y + ")");
+				if(x != last_x && y != last_y)
+				{
+					if(selectedTrace)
+						trace.add(new int[] {x, y});
+					//System.out.println("Screen diff:" + (x - last_x) + ", " + (y - last_y));
+					last_x = x;
+					last_y = y;
+
+					mouseFrames++;
+					mouselbl.setText(mouseFrames.toString());
+				}	        
 			}
 		};
 
