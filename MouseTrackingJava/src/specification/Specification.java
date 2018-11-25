@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import javax.imageio.ImageIO;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Specification {
@@ -20,7 +21,15 @@ public class Specification {
 	public static BufferedImage makeUIFromSpecification(String jsonString)
 	{
 		int uiGap = 10;
-		JSONObject jObject = new JSONObject(jsonString);
+		JSONObject jObject = null;
+		try
+		{
+			jObject = new JSONObject(jsonString);
+		}
+		catch(JSONException ex)
+		{
+			return null;
+		}
 		String formName = jObject.getString("formName");
 		String formId = jObject.getString("formId");
 		int sizeH = jObject.getInt("sizeH");
@@ -44,10 +53,9 @@ public class Specification {
 			String enable = UIObject.getString("enable");
 			int size = UIObject.getInt("size");
 			
+			Graphics2D g = (Graphics2D) renderedUi.getGraphics();
 			if(type.equalsIgnoreCase("radio"))
 			{
-				
-				Graphics2D g = (Graphics2D) renderedUi.getGraphics();
 				g.setColor(Color.BLACK);
 				g.setStroke(new BasicStroke(5));
 				
@@ -62,8 +70,20 @@ public class Specification {
 				{
 					g.drawOval(offsetX, offSetY, size, size);
 				}
-
+				
+				g.setColor(Color.BLACK);
+				g.drawString(label, offsetX + size + uiGap, offSetY + size /2);
 			}
+			
+			
+			if(type.equalsIgnoreCase("button"))
+			{
+				g.setColor(Color.BLACK);
+				g.drawRect(offsetX, offSetY, 100, 25);
+				g.drawString(label, offsetX + size /2 + uiGap, offSetY + size /2);
+			}
+			
+
 			offSetY +=  size + uiGap;
 			
 		}

@@ -1,4 +1,5 @@
 package app;
+import specification.*;
 import java.awt.AWTEvent;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
@@ -29,6 +30,8 @@ import java.awt.Dimension;
 
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
+
+import specification.MakeSPecQRCode;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -266,7 +269,10 @@ public class CaptureScreen extends JFrame {
 						int h = (int) points[0].getY() - (int) points[1].getY();
 						int w = (int) points[2].getX() - (int) points[1].getX();
 
-						File fileToRead = new File(decodedText);
+						//System.out.println(decodedText);
+						//File fileToRead = new File(decodedText);
+						
+						/*
 						if(fileToRead.exists())
 						{
 							if(CURRENT_OVERLAY_STATE == null)						
@@ -286,7 +292,26 @@ public class CaptureScreen extends JFrame {
 							capture.getGraphics().drawImage(
 									makeRectangle(h,w), 
 									(int) points[1].getX(), (int) points[1].getY(), null);
+									
+									*/
+						
+						BufferedImage retrievedImage = Specification.makeUIFromSpecification(result.getText());
+						
+						if(retrievedImage != null)
+						{
+							OVERLAY_X = (int) points[1].getX();
+							OVERLAY_Y = (int) points[1].getY();
+							OVERLAY_H = retrievedImage.getHeight();
+							OVERLAY_W = retrievedImage.getWidth();
 
+							capture.getGraphics().drawImage(
+									retrievedImage, 
+									(int) points[1].getX(), (int) points[1].getY(), null);
+						}
+						else
+							capture.getGraphics().drawImage(
+									makeRectangle(h,w), 
+									(int) points[1].getX(), (int) points[1].getY(), null);
 					}
 
 				} catch (AWTException | IOException e1) {
