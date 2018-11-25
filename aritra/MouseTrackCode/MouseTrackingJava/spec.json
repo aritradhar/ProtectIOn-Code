@@ -20,7 +20,7 @@
 	{
 		"type":"button",
 		"label":"OK",
-		"size": 10,
+		"size": 25,
 		"enable": "false"
 	},
 	
@@ -28,7 +28,7 @@
 		"type":"button",
 		"label":"Cancel",
 		"enable": "false",
-		"size": 10,
+		"size": 25,
 	}
 	
 	]
