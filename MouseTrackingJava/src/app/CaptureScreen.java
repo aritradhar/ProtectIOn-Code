@@ -295,7 +295,8 @@ public class CaptureScreen extends JFrame {
 									
 									*/
 						
-						BufferedImage retrievedImage = Specification.makeUIFromSpecification(result.getText());
+						Specification ui = new Specification(result.getText());
+						BufferedImage retrievedImage = ui.getUI();
 						
 						if(retrievedImage != null)
 						{
