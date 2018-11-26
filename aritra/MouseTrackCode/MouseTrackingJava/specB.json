@@ -14,7 +14,7 @@
 		"type":"radio",
 		"label":"option B",
 		"size": 40,
-		"enable": "false"
+		"enable": "true"
 	},	
 	{
 		"type":"button",
