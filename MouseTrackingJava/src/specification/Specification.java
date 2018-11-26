@@ -68,6 +68,7 @@ public class Specification {
 				}
 				else
 				{
+					g.setColor(Color.BLACK);
 					g.drawOval(offsetX, offSetY, size, size);
 				}
 				

@@ -31,14 +31,22 @@ import com.google.zxing.qrcode.QRCodeWriter;
 public class MakeSPecQRCode {
 
 	public static void main(String[] args) throws Exception {
-		
-		byte[] bytes = Files.readAllBytes(new File("spec.json").toPath());
-		
-		QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix = qrCodeWriter.encode(new String(bytes, StandardCharsets.UTF_8), BarcodeFormat.QR_CODE, 500, 500);
 
-        Path path = FileSystems.getDefault().getPath("spec.png");
-        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
-		
+		File[] files = new File(".").listFiles();
+
+		for(File file : files)
+		{		
+			if(!file.getName().contains(".json"))
+				continue;
+			
+			System.out.println("Processing : " + file.toString());
+			byte[] bytes = Files.readAllBytes(file.toPath());
+
+			QRCodeWriter qrCodeWriter = new QRCodeWriter();
+			BitMatrix bitMatrix = qrCodeWriter.encode(new String(bytes, StandardCharsets.UTF_8), BarcodeFormat.QR_CODE, 500, 500);
+
+			Path path = FileSystems.getDefault().getPath(file.getName().replaceAll(".json", ".png"));
+			MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+		}
 	}
 }
