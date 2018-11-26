@@ -5,24 +5,28 @@
 	"sizeW": 500,
 	"ui": [
 	{
+		"id":"radio_input1",
 		"type":"radio",
 		"label":"option A",
 		"size": 40,
 		"enable": "true"
 	},	
 	{
+		"id":"radio_input2",
 		"type":"radio",
 		"label":"option B",
 		"size": 40,
 		"enable": "false"
 	},	
 	{
+		"id":"button_input1",
 		"type":"button",
 		"label":"OK",
 		"size": 25,
 		"enable": "false"
 	},	
 	{
+		"id":"button_input2",
 		"type":"button",
 		"label":"Cancel",
 		"enable": "false",

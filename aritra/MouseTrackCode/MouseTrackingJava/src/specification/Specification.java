@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -18,7 +20,24 @@ import org.json.JSONObject;
 
 public class Specification {
 	
-	public static BufferedImage makeUIFromSpecification(String jsonString)
+	
+	String specification;
+	BufferedImage renderedUI;
+	List<String> inputs;
+	
+	public Specification(String specification) {
+		this.specification = specification;
+		this.renderedUI = this.makeUIFromSpecification(this.specification);
+		inputs = new ArrayList<>();
+	}
+	
+	public BufferedImage getUI()
+	{
+		return this.renderedUI;
+	}
+	
+	
+	public BufferedImage makeUIFromSpecification(String jsonString)
 	{
 		int uiGap = 10;
 		JSONObject jObject = null;
@@ -51,6 +70,8 @@ public class Specification {
 			String type = UIObject.getString("type");
 			String label = UIObject.getString("label");
 			String enable = UIObject.getString("enable");
+			this.inputs.add(UIObject.getString("id"));
+			
 			int size = UIObject.getInt("size");
 			
 			Graphics2D g = (Graphics2D) renderedUi.getGraphics();
@@ -85,8 +106,7 @@ public class Specification {
 			}
 			
 
-			offSetY +=  size + uiGap;
-			
+			offSetY +=  size + uiGap;		
 		}
 		
 		return renderedUi;
@@ -95,7 +115,7 @@ public class Specification {
 	public static void main(String[] args) throws IOException {
 		
 		String fileString = new String(Files.readAllBytes(new File("spec.json").toPath()), StandardCharsets.UTF_8);
-		BufferedImage bi = makeUIFromSpecification(fileString);
+		BufferedImage bi = new Specification(fileString).renderedUI;
 		ImageIO.write(bi, "png", new File("ui.png"));
 		
 		System.out.println("Done...");
