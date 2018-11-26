@@ -1,20 +1,24 @@
 package app;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class SerialCommunicationLinux {
 	
 	public static BufferedReader br;
+	public static BufferedWriter brw;
 	
 	public static boolean initialize() {
 		
 		try {
-			br = new BufferedReader(new FileReader("/dev/ttyUSB1"));
+			br = new BufferedReader(new FileReader(ENV.DEVICE));
+			brw = new BufferedWriter(new FileWriter(ENV.DEVICE));
 			return true;
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -54,21 +58,25 @@ public class SerialCommunicationLinux {
 					else
 						currentY = ENV.SCREEN_Y;
 					
-					CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);
-					
-					System.out.println(currentX + ", " + currentY + " | " + x + ", " + y);
+					CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);			
 					
 					if(currentX > CaptureScreen.OVERLAY_X && currentX < CaptureScreen.OVERLAY_X + CaptureScreen.OVERLAY_W &&
 							currentY > CaptureScreen.OVERLAY_Y && currentY < CaptureScreen.OVERLAY_Y + CaptureScreen.OVERLAY_H )
 					{
 						CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.blueSquare, currentX, currentY, null);
 						INSIDE_OVERLAY = true;
+						brw.write(1);
+						brw.flush();
 					}
 					else
 					{
 						CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);
 						INSIDE_OVERLAY = false;
+						brw.write(0);
+						brw.flush();
 					}
+					
+					System.out.println(currentX + ", " + currentY + " | " + x + ", " + y + " | " + INSIDE_OVERLAY);
 				}
 				//press
 				if(captureDataSplits.length == 2 && CaptureScreen.capture != null)
@@ -104,6 +112,11 @@ public class SerialCommunicationLinux {
 			ex.printStackTrace();
 			return false;
 		}
+	}
+	
+	public static void writeData(String str)
+	{
+		
 	}
 
 }
