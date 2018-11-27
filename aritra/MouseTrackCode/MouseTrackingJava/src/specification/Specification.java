@@ -30,9 +30,9 @@ public class Specification {
 	
 	public Specification(String specification) {
 		this.specification = specification;
-		this.renderedUI = this.makeUIFromSpecification(this.specification);
 		this.inputs = new ArrayList<>();
 		this.uiLocationBoxMap = new HashMap<>();
+		this.renderedUI = this.makeUIFromSpecification(this.specification);		
 	}
 	
 	public BufferedImage getUI()
@@ -89,8 +89,8 @@ public class Specification {
 			
 			int size = UIObject.getInt("size");
 			
-			//LocationBox locationBox = new LocationBox(new Location(offsetX, offsetY), size, size);
-			//this.uiLocationBoxMap.put(id, locationBox);
+			LocationBox locationBox = new LocationBox(new Location(offsetX, offsetY), size, size);
+			this.uiLocationBoxMap.put(id, locationBox);
 			
 			Graphics2D g = (Graphics2D) renderedUi.getGraphics();
 			if(type.equalsIgnoreCase("radio"))
