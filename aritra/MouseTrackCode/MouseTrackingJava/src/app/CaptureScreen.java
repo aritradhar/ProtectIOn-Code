@@ -153,15 +153,15 @@ public class CaptureScreen extends JFrame {
 		setTitle("Mirror");
 		JLabel label = new JLabel();
 
-		final String USER_HOME = System.getProperty("user.home");
+		//final String USER_HOME = System.getProperty("user.home");
 		//Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
 		Rectangle screenRect = new Rectangle(new Dimension(1920, 1080));
 		//Dimension d = new Dimension(1280, 720);
 
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		int width = gd.getDisplayMode().getWidth();
-		int height = gd.getDisplayMode().getHeight();
-		Image cursor = ImageIO.read(new File("4871e80dee864d8cc605da971d5b8a3c-2.png"));
+		//GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		//int width = gd.getDisplayMode().getWidth();
+		//int height = gd.getDisplayMode().getHeight();
+		//Image cursor = ImageIO.read(new File("4871e80dee864d8cc605da971d5b8a3c-2.png"));
 
 		int boxSide = 10, thickness = 5;
 
@@ -272,7 +272,7 @@ public class CaptureScreen extends JFrame {
 						//System.out.println(decodedText);
 						//File fileToRead = new File(decodedText);
 						
-						/*
+						/*old method of keeping the static JPEG on the device memory - bad idea
 						if(fileToRead.exists())
 						{
 							if(CURRENT_OVERLAY_STATE == null)						

@@ -2,7 +2,6 @@ package specification;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -26,7 +25,7 @@ public class Specification {
 	String specification;
 	BufferedImage renderedUI;
 	List<String> inputs;
-	Map<String, LocationBox> uiLocationBoxMap;
+	public Map<String, LocationBox> uiLocationBoxMap;
 	
 	public Specification(String specification) {
 		this.specification = specification;
@@ -52,6 +51,7 @@ public class Specification {
 		return null;
 	}
 	
+	@SuppressWarnings("unused")
 	public BufferedImage makeUIFromSpecification(String jsonString)
 	{
 		int uiGap = 10;
