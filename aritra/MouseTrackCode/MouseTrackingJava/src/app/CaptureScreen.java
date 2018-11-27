@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,8 +28,6 @@ import java.awt.Dimension;
 
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
-
-import specification.MakeSPecQRCode;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -72,6 +68,8 @@ class SerialReaderThreadWindows extends Thread{
 	public void run() {
 		SerialCommunicationLinux.initialize();
 		SerialCommunicationLinux.readData();
+		if(SerialCommunicationLinux.INSIDE_OVERLAY)
+			CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.blueSquare, SerialCommunicationLinux.currentX, SerialCommunicationLinux.currentY, null);
 	}
 }
 
