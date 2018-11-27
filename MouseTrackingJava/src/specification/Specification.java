@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -24,11 +26,13 @@ public class Specification {
 	String specification;
 	BufferedImage renderedUI;
 	List<String> inputs;
+	Map<String, LocationBox> uiLocationBoxMap;
 	
 	public Specification(String specification) {
 		this.specification = specification;
 		this.renderedUI = this.makeUIFromSpecification(this.specification);
-		inputs = new ArrayList<>();
+		this.inputs = new ArrayList<>();
+		this.uiLocationBoxMap = new HashMap<>();
 	}
 	
 	public BufferedImage getUI()
@@ -36,6 +40,17 @@ public class Specification {
 		return this.renderedUI;
 	}
 	
+	
+	public String getClickedUI(int x, int y)
+	{
+		for(String key : this.uiLocationBoxMap.keySet())
+		{
+			LocationBox locationBox = this.uiLocationBoxMap.get(key);
+			if(locationBox.isLocationInBox(new Location(x, y)));
+				return key;
+		}
+		return null;
+	}
 	
 	public BufferedImage makeUIFromSpecification(String jsonString)
 	{
@@ -62,7 +77,7 @@ public class Specification {
 		JSONArray jsonUiArray = jObject.getJSONArray("ui");
 		
 		
-		int offsetX = 10, offSetY = 10;
+		int offsetX = 10, offsetY = 10;
 		for(int i = 0; i < jsonUiArray.length(); i++)
 		{
 			JSONObject UIObject = jsonUiArray.getJSONObject(i);
@@ -70,9 +85,12 @@ public class Specification {
 			String type = UIObject.getString("type");
 			String label = UIObject.getString("label");
 			String enable = UIObject.getString("enable");
-			this.inputs.add(UIObject.getString("id"));
+			String id = UIObject.getString("id");
 			
 			int size = UIObject.getInt("size");
+			
+			//LocationBox locationBox = new LocationBox(new Location(offsetX, offsetY), size, size);
+			//this.uiLocationBoxMap.put(id, locationBox);
 			
 			Graphics2D g = (Graphics2D) renderedUi.getGraphics();
 			if(type.equalsIgnoreCase("radio"))
@@ -84,29 +102,29 @@ public class Specification {
 				if(enable.equalsIgnoreCase("true"))
 				{
 					g.setColor(Color.GREEN);
-					g.fillOval(offsetX, offSetY, size, size);
+					g.fillOval(offsetX, offsetY, size, size);
 
 				}
 				else
 				{
 					g.setColor(Color.BLACK);
-					g.drawOval(offsetX, offSetY, size, size);
+					g.drawOval(offsetX, offsetY, size, size);
 				}
 				
 				g.setColor(Color.BLACK);
-				g.drawString(label, offsetX + size + uiGap, offSetY + size /2);
+				g.drawString(label, offsetX + size + uiGap, offsetY + size /2);
 			}
 			
 			
 			if(type.equalsIgnoreCase("button"))
 			{
 				g.setColor(Color.BLACK);
-				g.drawRect(offsetX, offSetY, 100, 25);
-				g.drawString(label, offsetX + size /2 + uiGap, offSetY + size /2);
+				g.drawRect(offsetX, offsetY, 100, 25);
+				g.drawString(label, offsetX + size /2 + uiGap, offsetY + size /2);
 			}
 			
 
-			offSetY +=  size + uiGap;		
+			offsetY +=  size + uiGap;		
 		}
 		
 		return renderedUi;
