@@ -19,5 +19,11 @@ public class LocationBox {
 			&& testLocation.y >= this.startLocation.y 
 			&& testLocation.y <= this.startLocation.y + this.h;
 	}
+	
+
+	@Override
+	public String toString() {
+		return this.startLocation + ", h = " + h + ", w = " + w;
+	}
 
 }

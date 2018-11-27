@@ -19,4 +19,10 @@ public class Location {
 	{
 		return new Location(this.x, this.y + h);
 	}
+	
+
+	@Override
+	public String toString() {
+		return "(" + this.x + ", " + this.y + ")";
+	}
 }
