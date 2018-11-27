@@ -24,8 +24,9 @@ public class SerialCommunicationLinux {
 		}
 	}
 	
-	public static int currentX;
-	public static int currentY;
+	//mouse position from the device
+	public static volatile int currentX;
+	public static volatile int currentY;
 	public static boolean INSIDE_OVERLAY = false;
 	
 	public static String readData()
