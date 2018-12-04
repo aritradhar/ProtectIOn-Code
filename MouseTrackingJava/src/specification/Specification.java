@@ -45,7 +45,7 @@ public class Specification {
 		for(String key : this.uiLocationBoxMap.keySet())
 		{
 			LocationBox locationBox = this.uiLocationBoxMap.get(key);
-			if(locationBox.isLocationInBox(new Location(x, y)));
+			if(locationBox.isLocationInBox(new Location(x, y)))
 				return key;
 		}
 		return null;

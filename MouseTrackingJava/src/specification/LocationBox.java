@@ -14,10 +14,12 @@ public class LocationBox {
 	
 	public boolean isLocationInBox(Location testLocation)
 	{
-		return testLocation.x >= this.startLocation.x 
+		boolean res =  testLocation.x >= this.startLocation.x 
 			&& testLocation.x <= this.startLocation.x + this.w
 			&& testLocation.y >= this.startLocation.y 
 			&& testLocation.y <= this.startLocation.y + this.h;
+			
+			return res;
 	}
 	
 

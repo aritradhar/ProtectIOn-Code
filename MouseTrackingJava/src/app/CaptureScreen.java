@@ -1,41 +1,41 @@
 package app;
-import specification.*;
 import java.awt.AWTEvent;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.Robot;
+import java.awt.event.AWTEventListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import java.awt.Dimension;
 
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.AWTEventListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JCheckBox;
+import keyExchange.KeyExchange;
+import specification.Specification;
 
 
 //*************************************************************************************
@@ -85,6 +85,9 @@ public class CaptureScreen extends JFrame {
 	public static boolean selectedTrace = false;
 	public static File CURRENT_OVERLAY_STATE = null;
 	public static int OVERLAY_X, OVERLAY_Y, OVERLAY_H, OVERLAY_W;
+	public static volatile Specification ui;
+	
+	public static JLabel bufferlbl = new JLabel("New label");
 	/**
 	 * Launch the application.
 	 */
@@ -92,7 +95,6 @@ public class CaptureScreen extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-
 					if(System.getProperty("os.name").contains("Linux") || System.getProperty("os.name").contains("linux"))
 					{
 						SerialReaderThread th = new SerialReaderThread();
@@ -107,6 +109,23 @@ public class CaptureScreen extends JFrame {
 							System.err.println("Relayless mode");
 						}
 					}
+					
+					
+					 Runnable runnable = new Runnable() {
+					      public void run() {
+					        try {
+								SerialCommunicationLinux.writeData();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+					      }
+					    };
+					    
+					    ScheduledExecutorService service = Executors
+					                    .newSingleThreadScheduledExecutor();
+					    service.scheduleAtFixedRate(runnable, 0, 25, TimeUnit.MILLISECONDS);
+					
 
 					CaptureScreen frame = new CaptureScreen();
 					frame.setVisible(true);
@@ -239,7 +258,13 @@ public class CaptureScreen extends JFrame {
 		panel.add(lblFps);
 
 		JLabel fpslbl = new JLabel("New label");
-		panel.add(fpslbl);
+		panel.add(fpslbl);		
+		
+		JLabel lblBuffer = new JLabel("Buffer health");
+		panel.add(lblBuffer);
+
+		panel.add(bufferlbl);
+		
 
 		Runnable myRunnable = new Runnable() {
 
@@ -266,35 +291,9 @@ public class CaptureScreen extends JFrame {
 						//capture.getGraphics().drawString(result.getText(), (int) points[1].getX(), (int) points[1].getY() + 15);
 						int h = (int) points[0].getY() - (int) points[1].getY();
 						int w = (int) points[2].getX() - (int) points[1].getX();
-
-						//System.out.println(decodedText);
-						//File fileToRead = new File(decodedText);
 						
-						/*old method of keeping the static JPEG on the device memory - bad idea
-						if(fileToRead.exists())
-						{
-							if(CURRENT_OVERLAY_STATE == null)						
-								CURRENT_OVERLAY_STATE = fileToRead;
-							
-							BufferedImage retrievedImage = ImageIO.read(CURRENT_OVERLAY_STATE);
-							OVERLAY_X = (int) points[1].getX();
-							OVERLAY_Y = (int) points[1].getY();
-							OVERLAY_H = retrievedImage.getHeight();
-							OVERLAY_W = retrievedImage.getWidth();
-							
-							capture.getGraphics().drawImage(
-									retrievedImage, 
-									(int) points[1].getX(), (int) points[1].getY(), null);
-						}
-						else
-							capture.getGraphics().drawImage(
-									makeRectangle(h,w), 
-									(int) points[1].getX(), (int) points[1].getY(), null);
-									
-									*/
-						
-						Specification ui = new Specification(result.getText());
-						BufferedImage retrievedImage = ui.getUI();
+						CaptureScreen.ui = new Specification(decodedText);
+						BufferedImage retrievedImage = CaptureScreen.ui.getUI();
 						
 						if(retrievedImage != null)
 						{
@@ -308,9 +307,14 @@ public class CaptureScreen extends JFrame {
 									(int) points[1].getX(), (int) points[1].getY(), null);
 						}
 						else
-							capture.getGraphics().drawImage(
+						{
+							/*capture.getGraphics().drawImage(
 									makeRectangle(h,w), 
 									(int) points[1].getX(), (int) points[1].getY(), null);
+									*/
+							System.out.println("Received pk from the server");
+							KeyExchange.sendPKtoDevice(decodedText);
+						}
 					}
 
 				} catch (AWTException | IOException e1) {

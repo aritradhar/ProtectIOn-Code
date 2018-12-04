@@ -6,17 +6,20 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 public class SerialCommunicationLinux {
 	
 	public static BufferedReader br;
-	public static BufferedWriter brw;
+	public static int writeQueueCapacity = 5000;
+	public static Queue<Object> writeQueue = new ArrayBlockingQueue<>(writeQueueCapacity, true);
 	
 	public static boolean initialize() {
 		
 		try {
 			br = new BufferedReader(new FileReader(ENV.DEVICE));
-			brw = new BufferedWriter(new FileWriter(ENV.DEVICE));
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -59,22 +62,29 @@ public class SerialCommunicationLinux {
 					else
 						currentY = ENV.SCREEN_Y;
 					
-					CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);			
+					//CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);
 					
+					try
+					{
+						System.out.println(CaptureScreen.ui.getClickedUI(currentX - CaptureScreen.OVERLAY_X, currentY - CaptureScreen.OVERLAY_Y));
+						System.out.print("");
+					}
+					catch(NullPointerException ex)
+					{
+						System.out.println("None");
+					}
 					if(currentX > CaptureScreen.OVERLAY_X && currentX < CaptureScreen.OVERLAY_X + CaptureScreen.OVERLAY_W &&
 							currentY > CaptureScreen.OVERLAY_Y && currentY < CaptureScreen.OVERLAY_Y + CaptureScreen.OVERLAY_H )
 					{
 						CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.blueSquare, currentX, currentY, null);
 						INSIDE_OVERLAY = true;
-						brw.write(1);
-						brw.flush();
+						writeQueue.add(new Integer(1));
 					}
 					else
 					{
 						CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.redSquare, currentX, currentY, null);
 						INSIDE_OVERLAY = false;
-						brw.write(0);
-						brw.flush();
+						writeQueue.add(new Integer(0));
 					}
 					
 					System.out.println(currentX + ", " + currentY + " | " + x + ", " + y + " | " + INSIDE_OVERLAY);
@@ -115,9 +125,22 @@ public class SerialCommunicationLinux {
 		}
 	}
 	
-	public static void writeData(String str)
+	public static void writeData() throws IOException
 	{
+		CaptureScreen.bufferlbl.setText(writeQueue.size() + "/" + writeQueueCapacity);
+		if(writeQueue.isEmpty())
+			return;
 		
+		Object dataToWrite = writeQueue.poll();
+		BufferedWriter bw = new BufferedWriter(new FileWriter(ENV.DEVICE));
+		
+		if(dataToWrite instanceof String)
+			bw.write((String)dataToWrite);
+		else
+			bw.write((Integer)dataToWrite);
+		
+		bw.flush();
+		bw.close();
 	}
 
 }
