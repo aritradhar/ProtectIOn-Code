@@ -1,8 +1,8 @@
 {
 	"formId": "form1",
 	"formName": "form1",
-	"sizeH": 500,
-	"sizeW": 500,
+	"sizeH": 300,
+	"sizeW": 300,
 	"ui": [
 	{
 		"id":"radio_input1",
