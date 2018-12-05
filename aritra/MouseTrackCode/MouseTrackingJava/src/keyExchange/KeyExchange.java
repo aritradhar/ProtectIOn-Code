@@ -28,7 +28,8 @@ public class KeyExchange {
 			}
 			
 			SerialCommunicationLinux.writeQueue.add(keyBase64);
-			KeyExchange.setPK = true;
+			//KeyExchange.setPK = true;
+			System.out.println("Received pk from the server -> Device");
 		}
 		else
 		{

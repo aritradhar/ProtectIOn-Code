@@ -42,10 +42,12 @@ public class GenerateDummyKey {
 		
 		
 		QRCodeWriter qrCodeWriter = new QRCodeWriter();
-		BitMatrix bitMatrix = qrCodeWriter.encode(pkStr, BarcodeFormat.QR_CODE, 400, 400);
+		BitMatrix bitMatrix = qrCodeWriter.encode(jo1.toString(1), BarcodeFormat.QR_CODE, 400, 400);
 
 		Path path = FileSystems.getDefault().getPath("pk.png");
 		MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+		
+		System.out.println("Done..");
 	}
 
 }
