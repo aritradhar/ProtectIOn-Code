@@ -64,6 +64,9 @@ public class Specification {
 		{
 			return null;
 		}
+		if(!jObject.has("formName"))
+			return null;
+		
 		String formName = jObject.getString("formName");
 		String formId = jObject.getString("formId");
 		int sizeH = jObject.getInt("sizeH");

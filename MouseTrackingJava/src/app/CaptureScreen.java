@@ -124,7 +124,7 @@ public class CaptureScreen extends JFrame {
 					    
 					    ScheduledExecutorService service = Executors
 					                    .newSingleThreadScheduledExecutor();
-					    service.scheduleAtFixedRate(runnable, 0, 25, TimeUnit.MILLISECONDS);
+					    service.scheduleAtFixedRate(runnable, 0, 5, TimeUnit.MILLISECONDS);
 					
 
 					CaptureScreen frame = new CaptureScreen();
@@ -312,7 +312,6 @@ public class CaptureScreen extends JFrame {
 									makeRectangle(h,w), 
 									(int) points[1].getX(), (int) points[1].getY(), null);
 									*/
-							System.out.println("Received pk from the server");
 							KeyExchange.sendPKtoDevice(decodedText);
 						}
 					}

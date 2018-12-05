@@ -135,10 +135,22 @@ public class SerialCommunicationLinux {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(ENV.DEVICE));
 		
 		if(dataToWrite instanceof String)
-			bw.write((String)dataToWrite);
+		{
+			char[] data = new char[((String) dataToWrite).length() + 2];
+			data[0] = 'a';
+			data[1] = 'a';
+			for(int i = 0; i < ((String) dataToWrite).length(); i++)
+				data[2 + i] = ((String) dataToWrite).charAt(i);
+			bw.write(data);
+		}
 		else
-			bw.write((Integer)dataToWrite);
-		
+		{
+			char[] data = new char[3];
+			data[0] = 'a';
+			data[1] = 'a';
+			data[2] = (char) dataToWrite;
+			bw.write(data);
+		}
 		bw.flush();
 		bw.close();
 	}
