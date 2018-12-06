@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -92,6 +93,9 @@ public class CaptureScreen extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
+		
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -124,7 +128,7 @@ public class CaptureScreen extends JFrame {
 					    
 					    ScheduledExecutorService service = Executors
 					                    .newSingleThreadScheduledExecutor();
-					    service.scheduleAtFixedRate(runnable, 0, 5, TimeUnit.MILLISECONDS);
+					    service.scheduleAtFixedRate(runnable, 0, 30, TimeUnit.MILLISECONDS);
 					
 
 					CaptureScreen frame = new CaptureScreen();
