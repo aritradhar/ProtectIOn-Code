@@ -136,20 +136,26 @@ public class SerialCommunicationLinux {
 		
 		if(dataToWrite instanceof String)
 		{
-			char[] data = new char[((String) dataToWrite).length() + 2];
-			data[0] = 'a';
-			data[1] = 'a';
+			/*
+			char[] data = new char[((String) dataToWrite).length() + 1];
+			data[0] = 'b';
 			for(int i = 0; i < ((String) dataToWrite).length(); i++)
-				data[2 + i] = ((String) dataToWrite).charAt(i);
+				data[1 + i] = ((String) dataToWrite).charAt(i);
+			System.out.println(new String(data));
 			bw.write(data);
+			*/
+			bw.write((String) dataToWrite);
 		}
 		else
 		{
-			char[] data = new char[3];
+			/*
+			char[] data = new char[2];
 			data[0] = 'a';
-			data[1] = 'a';
-			data[2] = (char) dataToWrite;
+			data[1] = (char) dataToWrite;
+			System.out.println(new String(data));
 			bw.write(data);
+			*/
+			bw.write((int) dataToWrite);
 		}
 		bw.flush();
 		bw.close();

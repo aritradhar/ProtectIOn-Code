@@ -27,9 +27,14 @@ public class KeyExchange {
 				return;
 			}
 			
-			SerialCommunicationLinux.writeQueue.add(keyBase64);
-			//KeyExchange.setPK = true;
-			System.out.println("Received pk from the server -> Device");
+			//SerialCommunicationLinux.writeQueue.add(keyBase64);
+			for(int i = 0; i < keyBase64.length(); i++)
+			{
+				SerialCommunicationLinux.writeQueue.add((int) keyBase64.charAt(i));
+			}
+			
+			KeyExchange.setPK = true;
+			System.out.println("Received pk from the server -> Device : " + keyBase64 + " | " + keyBase64.length());
 		}
 		else
 		{
