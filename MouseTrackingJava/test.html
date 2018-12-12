@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<p>&nbsp;</p>
+
+<p><br />
+<br />
+&nbsp;</p>
+
+<p><img alt="server pk file" height="400" src="pk.png" width="400" /></p>
+<p id="info"></p>
+<p><input id="pk" maxlength="80" name="pk" size="80" type="text" /></p>
+<script>
+window.onload = function() {
+  document.getElementById("pk").focus();
+};
+
+window.addEventListener('input', function (e) {
+  document.getElementById("info").innerHTML = document.getElementById("pk").value.length;
+  if(document.getElementById("pk").value.length == 64)
+  	document.getElementById("info").innerHTML = "Received device pk";
+}, false);
+
+</script></body>
+</html>

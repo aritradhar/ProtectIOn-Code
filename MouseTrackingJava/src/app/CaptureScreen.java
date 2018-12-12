@@ -128,7 +128,7 @@ public class CaptureScreen extends JFrame {
 					    
 					    ScheduledExecutorService service = Executors
 					                    .newSingleThreadScheduledExecutor();
-					    service.scheduleAtFixedRate(runnable, 0, 30, TimeUnit.MILLISECONDS);
+					    service.scheduleAtFixedRate(runnable, 0, 5, TimeUnit.MILLISECONDS);
 					
 
 					CaptureScreen frame = new CaptureScreen();
@@ -390,6 +390,9 @@ public class CaptureScreen extends JFrame {
 		btnReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				trace = new ArrayList<>();
+				//reset the public key
+				KeyExchange.setPK = false;
+				
 			}
 		});
 		//pack();
@@ -404,7 +407,4 @@ public class CaptureScreen extends JFrame {
 			System.out.print(MouseInfo.getPointerInfo().getLocation() + " | ");
 			System.out.println(event);
 		}
-	}
-
-
-}
+	}}
