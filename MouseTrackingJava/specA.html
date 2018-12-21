@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Input</title>
+</head>
+<p><img alt="specification A" height="400" src="specA.png" width="400" /></p>
+
+
+<p><input id="data" maxlength="80" name="pk" size="80" type="text" /></p>
+<script>
+window.onload = function() {
+  document.getElementById("data").focus();
+};
+
+window.addEventListener('input', function (e) {
+  document.getElementById("info").innerHTML = document.getElementById("pk").value.length;
+  if(document.getElementById("pk").value.length == 64)
+  {
+  	document.getElementById("info").innerHTML = "Received device pk";
+  	window.location.href = 'keyExchangeSuccess.html';
+  	}
+}, false);
+
+</script></body>
+
+
+</html>

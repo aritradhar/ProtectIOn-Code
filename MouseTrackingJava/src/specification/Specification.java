@@ -54,7 +54,7 @@ public class Specification {
 	@SuppressWarnings("unused")
 	public BufferedImage makeUIFromSpecification(String jsonString)
 	{
-		int uiGap = 10;
+		
 		JSONObject jObject = null;
 		try
 		{
@@ -71,6 +71,7 @@ public class Specification {
 		String formId = jObject.getString("formId");
 		int sizeH = jObject.getInt("sizeH");
 		int sizeW = jObject.getInt("sizeW");
+		int uiGap = jObject.getInt("uiGap");
 		BufferedImage renderedUi = new BufferedImage(sizeW, sizeH, BufferedImage.TYPE_3BYTE_BGR);
 		
 		for(int i = 0; i < sizeW; i++)
@@ -90,14 +91,17 @@ public class Specification {
 			String enable = UIObject.getString("enable");
 			String id = UIObject.getString("id");
 			
-			int size = UIObject.getInt("size");
 			
-			LocationBox locationBox = new LocationBox(new Location(offsetX, offsetY), size, size);
-			this.uiLocationBoxMap.put(id, locationBox);
 			
 			Graphics2D g = (Graphics2D) renderedUi.getGraphics();
 			if(type.equalsIgnoreCase("radio"))
 			{
+				
+				int size = UIObject.getInt("size");
+				
+				LocationBox locationBox = new LocationBox(new Location(offsetX, offsetY), size, size);
+				this.uiLocationBoxMap.put(id, locationBox);
+				
 				g.setColor(Color.BLACK);
 				g.setStroke(new BasicStroke(5));
 				
@@ -116,18 +120,27 @@ public class Specification {
 				
 				g.setColor(Color.BLACK);
 				g.drawString(label, offsetX + size + uiGap, offsetY + size /2);
+				
+				offsetY +=  size + uiGap;
 			}
 			
 			
 			if(type.equalsIgnoreCase("button"))
 			{
+				int size_x = UIObject.getInt("size_x");
+				int size_y = UIObject.getInt("size_y");
+				
+				LocationBox locationBox = new LocationBox(new Location(offsetX, offsetY), size_y, size_x);
+				this.uiLocationBoxMap.put(id, locationBox);
+				
+				
 				g.setColor(Color.BLACK);
-				g.drawRect(offsetX, offsetY, 100, 25);
-				g.drawString(label, offsetX + size /2 + uiGap, offsetY + size /2);
+				g.drawRect(offsetX, offsetY, size_x, size_y);
+				g.drawString(label, offsetX + size_x /2 + uiGap, offsetY + size_y /2);
+				
+				offsetY +=  size_y + uiGap;		
 			}
-			
-
-			offsetY +=  size + uiGap;		
+						
 		}
 		
 		return renderedUi;

@@ -301,14 +301,15 @@ public class CaptureScreen extends JFrame {
 						
 						if(retrievedImage != null)
 						{
-							OVERLAY_X = (int) points[1].getX();
-							OVERLAY_Y = (int) points[1].getY();
+							OVERLAY_X = (int) points[1].getX() - ENV.OVERLAY_OFFSET_X;
+							OVERLAY_Y = (int) points[1].getY() - ENV.OVERLAY_OFFSET_Y;
 							OVERLAY_H = retrievedImage.getHeight();
 							OVERLAY_W = retrievedImage.getWidth();
 
 							capture.getGraphics().drawImage(
 									retrievedImage, 
-									(int) points[1].getX(), (int) points[1].getY(), null);
+									(int) OVERLAY_X, 
+									(int) OVERLAY_Y, null);
 						}
 						else
 						{
