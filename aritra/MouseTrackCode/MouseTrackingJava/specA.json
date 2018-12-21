@@ -3,34 +3,37 @@
 	"formName": "form1",
 	"sizeH": 400,
 	"sizeW": 400,
+	"uiGap": 10,
 	"ui": [
 	{
-		"id":"radio_input1",
+		"id":"r1",
 		"type":"radio",
 		"label":"option A",
 		"size": 40,
 		"enable": "true"
 	},	
 	{
-		"id":"radio_input2",
+		"id":"r2",
 		"type":"radio",
 		"label":"option B",
 		"size": 40,
 		"enable": "false"
 	},	
 	{
-		"id":"button_input1",
+		"id":"b1",
 		"type":"button",
 		"label":"OK",
-		"size": 25,
+		"size_x": 100,
+		"size_y": 25,
 		"enable": "false"
 	},	
 	{
-		"id":"button_input2",
+		"id":"b2",
 		"type":"button",
 		"label":"Cancel",
 		"enable": "false",
-		"size": 25
+		"size_x": 100,
+		"size_y": 25
 	}
 	
 	]
