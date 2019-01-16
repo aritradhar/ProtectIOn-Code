@@ -1,6 +1,11 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+
 <body>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="qrcode.js"></script>
 
 <h2>The Button Element</h2>
 <div id = "outerdiv">
@@ -9,6 +14,32 @@
  
  <script>
  var button = document.getElementById("testButton")
+ 
+
+
+	var newDiv = document.createElement("div")
+	newDiv.setAttribute("id", "QRCode")
+	newDiv.setAttribute("style", "width:300px; height:300px; margin-top:15px;")
+	var outer = document.getElementById("outerdiv")
+	outer.appendChild(newDiv)
+	
+	
+	var qrcode = new QRCode(document.getElementById("QRCode"), {
+	width : 300,
+	height : 300
+	});
+	
+	var obj = new Object();
+   	obj.formId = "buttonTest";
+   	obj.formName  = "buttonTest";
+  	obj.sizeH = 300;
+  	obj.sizeW = 300;
+  	obj.uiGap = 10;
+  	
+   	var jsonString= JSON.stringify(obj);
+	
+	qrcode.makeCode(jsonString)
+
  </script>
  
 </body>

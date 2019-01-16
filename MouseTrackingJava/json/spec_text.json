@@ -1,0 +1,29 @@
+{
+	"formId": "form1",
+	"formName": "form1",
+	"sizeH": 400,
+	"sizeW": 400,
+	"uiGap": 10,
+	"ui": [
+	{
+		"id":"textbox_1",
+		"type":"textbox",
+		"label":"Sensitive field 1",
+		"text":"secret data 1",
+		"size_x": 100,
+		"size_y": 25,
+		"size": 40,
+		"enable": "false"
+	},
+	{
+		"id":"textbox_2",
+		"type":"textbox",
+		"label":"Sensitive field2 ",
+		"text":"secret data 2",
+		"size_x": 100,
+		"size_y": 25,
+		"size": 40,
+		"enable": "false"
+	}
+	]
+}

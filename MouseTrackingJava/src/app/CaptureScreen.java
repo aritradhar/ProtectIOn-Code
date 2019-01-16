@@ -291,6 +291,7 @@ public class CaptureScreen extends JFrame {
 					if(result != null)
 					{
 						String decodedText = result.getText();
+						//System.out.println(decodedText);
 						ResultPoint[] points = result.getResultPoints();
 						//capture.getGraphics().drawString(result.getText(), (int) points[1].getX(), (int) points[1].getY() + 15);
 						int h = (int) points[0].getY() - (int) points[1].getY();
