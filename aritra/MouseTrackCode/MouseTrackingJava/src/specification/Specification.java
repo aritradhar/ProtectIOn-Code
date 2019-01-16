@@ -140,7 +140,26 @@ public class Specification {
 				
 				offsetY +=  size_y + uiGap;		
 			}
+			
+			
+			if(type.equalsIgnoreCase("textbox"))
+			{
+				int size_x = UIObject.getInt("size_x");
+				int size_y = UIObject.getInt("size_y");
+				
+				LocationBox locationBox = new LocationBox(new Location(offsetX, offsetY), size_y, size_x);
+				this.uiLocationBoxMap.put(id, locationBox);
 						
+				String text = UIObject.getString("text");
+				
+				g.setColor(Color.BLACK);
+				g.drawString(label, offsetX, offsetY);
+				
+				g.drawRect(offsetX, offsetY + uiGap, size_x, size_y);
+				g.drawString(label, offsetX + 2, offsetY + size_y + 2);
+				
+				offsetY +=  size_y + uiGap;		
+			}
 		}
 		
 		return renderedUi;
