@@ -86,6 +86,7 @@ public class CaptureScreen extends JFrame {
 	public static boolean selectedTrace = false;
 	public static File CURRENT_OVERLAY_STATE = null;
 	public static int OVERLAY_X, OVERLAY_Y, OVERLAY_H, OVERLAY_W;
+	public static String UI_OVERLAY_MOUSEOVER_OBJECT = null;
 	public static volatile Specification ui;
 	
 	public static JLabel bufferlbl = new JLabel("New label");
