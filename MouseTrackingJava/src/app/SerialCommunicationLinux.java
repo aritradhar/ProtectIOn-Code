@@ -66,19 +66,27 @@ public class SerialCommunicationLinux {
 					
 					try
 					{
-						System.out.println(CaptureScreen.ui.getClickedUI(currentX - CaptureScreen.OVERLAY_X, currentY - CaptureScreen.OVERLAY_Y));
-						System.out.print("");
+						CaptureScreen.UI_OVERLAY_MOUSEOVER_OBJECT = 
+								CaptureScreen.ui.getClickedUI(currentX - CaptureScreen.OVERLAY_X, currentY - CaptureScreen.OVERLAY_Y);				
 					}
 					catch(NullPointerException ex)
 					{
-						System.out.println("None");
+						CaptureScreen.UI_OVERLAY_MOUSEOVER_OBJECT = null;
 					}
+					System.out.println("UI overlay : " + CaptureScreen.UI_OVERLAY_MOUSEOVER_OBJECT );
+					System.out.print("");
+					
+					
 					if(currentX > CaptureScreen.OVERLAY_X && currentX < CaptureScreen.OVERLAY_X + CaptureScreen.OVERLAY_W &&
 							currentY > CaptureScreen.OVERLAY_Y && currentY < CaptureScreen.OVERLAY_Y + CaptureScreen.OVERLAY_H )
 					{
 						CaptureScreen.capture.getGraphics().drawImage(CaptureScreen.blueSquare, currentX, currentY, null);
 						INSIDE_OVERLAY = true;
 						writeQueue.add(new Integer(1));
+						//if(CaptureScreen.UI_OVERLAY_MOUSEOVER_OBJECT !=null)
+						//{
+						//	writeQueue.add("bla");
+						//}
 					}
 					else
 					{
