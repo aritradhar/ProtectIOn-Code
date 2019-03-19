@@ -352,7 +352,8 @@ public class CaptureScreen extends JFrame {
 				}
 
 				capture.getGraphics().drawImage(greenSquare, x, y, null);
-
+				//if(SerialCommunicationLinux.INSIDE_OVERLAY)
+				//	capture.getGraphics().drawImage(blueSquare, x, y, null);
 
 				//capture.getGraphics().drawImage(blackSquare, x, y, null);
 				//capture.getGraphics().drawImage(cursor, x, y, null);

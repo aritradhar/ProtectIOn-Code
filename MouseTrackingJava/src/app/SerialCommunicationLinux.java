@@ -10,6 +10,8 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
+import specification.Specification;
+
 public class SerialCommunicationLinux {
 	
 	public static BufferedReader br;
@@ -104,11 +106,11 @@ public class SerialCommunicationLinux {
 					String button = captureDataSplits[1];
 					
 					String activityString = (activity == 0) ? "press" : "release";
-					System.out.println("Activity : " + button + " : " + activityString + " @ " +  currentX + ", " + currentY + " inside overlay : " + INSIDE_OVERLAY);
+					System.out.println("Activity : " + button + " : " + activityString + " inside overlay : " + CaptureScreen.UI_OVERLAY_MOUSEOVER_OBJECT );
 					
 					if(INSIDE_OVERLAY)
 					{
-						CaptureScreen.CURRENT_OVERLAY_STATE = new File("2.jpg");
+						Specification.SelectiveEnableID = CaptureScreen.UI_OVERLAY_MOUSEOVER_OBJECT;
 					}
 				}
 			}
