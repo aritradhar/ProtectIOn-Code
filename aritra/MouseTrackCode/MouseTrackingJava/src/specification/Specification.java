@@ -26,6 +26,8 @@ public class Specification {
 	BufferedImage renderedUI;
 	List<String> inputs;
 	public Map<String, LocationBox> uiLocationBoxMap;
+	public static String SelectiveEnableID = null;
+	
 	
 	public Specification(String specification) {
 		this.specification = specification;
@@ -91,7 +93,11 @@ public class Specification {
 			String enable = UIObject.getString("enable");
 			String id = UIObject.getString("id");
 			
-			
+			if(SelectiveEnableID != null)
+			{
+				if(id.equals(SelectiveEnableID))
+					enable = "true";
+			}
 			
 			Graphics2D g = (Graphics2D) renderedUi.getGraphics();
 			if(type.equalsIgnoreCase("radio"))

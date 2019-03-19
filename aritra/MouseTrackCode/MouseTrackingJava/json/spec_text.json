@@ -1,6 +1,7 @@
 {
 	"formId": "form1",
 	"formName": "form1",
+	"domain": "secure_site.io",
 	"sizeH": 400,
 	"sizeW": 400,
 	"uiGap": 10,
@@ -24,6 +25,22 @@
 		"size_y": 25,
 		"size": 40,
 		"enable": "false"
+	},
+	{
+		"id":"b1",
+		"type":"button",
+		"label":"OK",
+		"size_x": 100,
+		"size_y": 25,
+		"enable": "false"
+	},	
+	{
+		"id":"b2",
+		"type":"button",
+		"label":"Cancel",
+		"enable": "false",
+		"size_x": 100,
+		"size_y": 25
 	}
 	]
 }
