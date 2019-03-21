@@ -98,6 +98,12 @@ public class SerialCommunicationLinux {
 					}
 					
 					System.out.println(currentX + ", " + currentY + " | " + x + ", " + y + " | " + INSIDE_OVERLAY);
+					
+					if(INSIDE_OVERLAY)
+					{
+						Specification.SelectiveEnableID = CaptureScreen.UI_OVERLAY_MOUSEOVER_OBJECT;
+					}
+					
 				}
 				//press
 				if(captureDataSplits.length == 2 && CaptureScreen.capture != null)

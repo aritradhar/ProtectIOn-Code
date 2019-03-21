@@ -27,6 +27,7 @@ public class Specification {
 	List<String> inputs;
 	public Map<String, LocationBox> uiLocationBoxMap;
 	public static String SelectiveEnableID = null;
+	public static String HoverEnableID  = null;
 	
 	
 	public Specification(String specification) {
@@ -142,6 +143,15 @@ public class Specification {
 				
 				g.setColor(Color.BLACK);
 				g.drawRect(offsetX, offsetY, size_x, size_y);
+				if(HoverEnableID != null)
+				{
+					if(id.equals(HoverEnableID))
+					{
+						g.setColor(Color.GREEN);
+						g.fillRect(offsetX, offsetY, size_x, size_y);
+					}
+				}
+				g.setColor(Color.BLACK);
 				g.drawString(label, offsetX + size_x /2 + uiGap, offsetY + size_y /2);
 				
 				offsetY +=  size_y + uiGap;		
