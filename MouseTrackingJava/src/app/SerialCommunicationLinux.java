@@ -10,6 +10,8 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
+import javax.imageio.ImageIO;
+
 import specification.Specification;
 
 public class SerialCommunicationLinux {
@@ -40,7 +42,7 @@ public class SerialCommunicationLinux {
 		try {
 			while((str = br.readLine()) != null)
 			{
-				//System.out.println(str);
+				System.out.println("G " + str);
 				String[] captureDataSplits = str.split(",");
 				//wait for the capture initialized by the other thread
 				//move and drag
@@ -118,6 +120,7 @@ public class SerialCommunicationLinux {
 					{
 						Specification.SelectiveEnableID = CaptureScreen.UI_OVERLAY_MOUSEOVER_OBJECT;
 					}
+					//ImageIO.write(CaptureScreen.capture, "jpeg", new File("capture.jpg"));
 				}
 			}
 		} catch (IOException e) {
