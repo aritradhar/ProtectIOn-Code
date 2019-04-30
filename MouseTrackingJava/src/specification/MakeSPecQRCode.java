@@ -45,7 +45,7 @@ public class MakeSPecQRCode {
 			QRCodeWriter qrCodeWriter = new QRCodeWriter();
 			BitMatrix bitMatrix = qrCodeWriter.encode(new String(bytes, StandardCharsets.UTF_8), BarcodeFormat.QR_CODE, 400, 400);
 
-			Path path = FileSystems.getDefault().getPath("qr codes/" + file.getName().replaceAll(".json", ".png"));
+			Path path = FileSystems.getDefault().getPath("qr_codes/" + file.getName().replaceAll(".json", ".png"));
 			MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
 		}
 	}

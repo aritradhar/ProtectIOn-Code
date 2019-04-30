@@ -157,6 +157,20 @@ public class Specification {
 				offsetY +=  size_y + uiGap;		
 			}
 			
+			if(type.equalsIgnoreCase("slider"))
+			{
+				int size_x = UIObject.getInt("size_x");
+				int size_y = UIObject.getInt("size_y");
+				
+				LocationBox locationBox = new LocationBox(new Location(offsetX, offsetY), size_y, size_x);
+				this.uiLocationBoxMap.put(id, locationBox);
+				
+				g.setColor(Color.BLACK);
+				g.drawString(label, offsetX, offsetY);
+				
+				offsetY +=  size_y + uiGap;	
+				
+			}
 			
 			if(type.equalsIgnoreCase("textbox"))
 			{
