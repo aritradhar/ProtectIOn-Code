@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import glob
 import time
-import os
 
 templ_color = cv2.imread('cursor1.jpg', cv2.IMREAD_COLOR)
 mask = cv2.imread('mask3.jpg', cv2.IMREAD_GRAYSCALE)
