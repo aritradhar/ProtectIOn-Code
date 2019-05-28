@@ -42,15 +42,15 @@ match_method = cv2.TM_SQDIFF
 # mask = cv2.threshold(mask, thresh, 255, cv2.THRESH_BINARY)[1]
 w, h = templ.shape[:2]
 
-cv2.namedWindow('Output')
-cv2.namedWindow('Cursor')
-cv2.namedWindow('Template')
-cv2.moveWindow('Output', 0, 0)
+# cv2.namedWindow('Output')
+# cv2.namedWindow('Cursor')
+# cv2.namedWindow('Template')
+# cv2.moveWindow('Output', 0, 0)
 
 total = 0
 ops = 0
 
-for filepath in glob.iglob('tl/c200/*.jpg'):
+for filepath in glob.iglob('tl/c50/*.jpg'):
 	# print("processing: "+filepath)
 	img_color = cv2.imread(filepath, cv2.IMREAD_COLOR)
 	img = cv2.imread(filepath, cv2.IMREAD_GRAYSCALE)
@@ -103,4 +103,5 @@ for filepath in glob.iglob('tl/c200/*.jpg'):
 	# cv2.waitKey(0)
 avg = total / ops
 print("average: ", avg)
+print("count: ", ops)
 cv2.destroyAllWindows()
