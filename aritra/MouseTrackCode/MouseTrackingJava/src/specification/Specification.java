@@ -2,6 +2,7 @@ package specification;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -72,6 +73,15 @@ public class Specification {
 		
 		String formName = jObject.getString("formName");
 		String formId = jObject.getString("formId");
+		String origin = null;
+		try
+		{
+			origin = jObject.getString("site");
+		}
+		catch(Exception ex)
+		{
+			
+		}
 		int sizeH = jObject.getInt("sizeH");
 		int sizeW = jObject.getInt("sizeW");
 		int uiGap = jObject.getInt("uiGap");
@@ -82,9 +92,17 @@ public class Specification {
 				renderedUi.setRGB(j, i, Color.WHITE.getRGB());
 		
 		JSONArray jsonUiArray = jObject.getJSONArray("ui");
-		
-		
 		int offsetX = 10, offsetY = 10;
+		Graphics2D g = (Graphics2D) renderedUi.getGraphics();
+		
+		g.setFont(new Font("TimesRoman", Font.PLAIN, 12)); 
+		g.setColor(Color.GREEN);
+		g.fillRect(offsetX, offsetY, sizeW, 20);
+		g.setColor(Color.BLACK);
+		g.drawString(origin, offsetX, offsetY);
+		offsetY += 20 + uiGap;
+
+		
 		for(int i = 0; i < jsonUiArray.length(); i++)
 		{
 			JSONObject UIObject = jsonUiArray.getJSONObject(i);
@@ -100,7 +118,7 @@ public class Specification {
 					enable = "true";
 			}
 			
-			Graphics2D g = (Graphics2D) renderedUi.getGraphics();
+			
 			if(type.equalsIgnoreCase("radio"))
 			{
 				
