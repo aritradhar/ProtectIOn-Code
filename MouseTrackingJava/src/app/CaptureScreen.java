@@ -88,6 +88,8 @@ public class CaptureScreen extends JFrame {
 	public static int OVERLAY_X, OVERLAY_Y, OVERLAY_H, OVERLAY_W;
 	public static String UI_OVERLAY_MOUSEOVER_OBJECT = null;
 	public static volatile Specification ui;
+	public static String OLD_TEXT = null;
+	public static BufferedImage retrievedImage;
 	
 	public static JLabel bufferlbl = new JLabel("New label");
 	/**
@@ -286,20 +288,31 @@ public class CaptureScreen extends JFrame {
 
 				try {
 					capture = new Robot().createScreenCapture(screenRect);
-
+					
+					double start_1 = System.currentTimeMillis();
 					Result result = QRCodeReader.decodeQRCode(capture);
+					
 					//
 					if(result != null)
 					{
+						System.out.println("QR : " + (System.currentTimeMillis() - start_1) + " ms");
 						String decodedText = result.getText();
+						
 						//System.out.println(decodedText);
 						ResultPoint[] points = result.getResultPoints();
 						//capture.getGraphics().drawString(result.getText(), (int) points[1].getX(), (int) points[1].getY() + 15);
 						int h = (int) points[0].getY() - (int) points[1].getY();
 						int w = (int) points[2].getX() - (int) points[1].getX();
 						
-						CaptureScreen.ui = new Specification(decodedText);
-						BufferedImage retrievedImage = CaptureScreen.ui.getUI();
+						start_1 = System.currentTimeMillis();
+						
+						if(CaptureScreen.OLD_TEXT != null && CaptureScreen.OLD_TEXT != decodedText)
+						{
+							CaptureScreen.ui = new Specification(decodedText);
+							CaptureScreen.retrievedImage = CaptureScreen.ui.getUI();
+							System.out.println("D + O : " + (System.currentTimeMillis() - start_1) + " ms");
+						}
+							CaptureScreen.OLD_TEXT = decodedText;
 						
 						if(retrievedImage != null)
 						{
