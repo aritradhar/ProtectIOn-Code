@@ -50,8 +50,8 @@ w, h = templ.shape[:2]
 total = 0
 ops = 0
 
-for filepath in glob.iglob('tl/c50/*.jpg'):
-	# print("processing: "+filepath)
+for filepath in glob.iglob('tl/*.jpg'):
+	print("processing: "+filepath)
 	img_color = cv2.imread(filepath, cv2.IMREAD_COLOR)
 	img = cv2.imread(filepath, cv2.IMREAD_GRAYSCALE)
 	# img = cv2.threshold(img, thresh, 255, cv2.THRESH_BINARY)[1]
@@ -96,11 +96,13 @@ for filepath in glob.iglob('tl/c50/*.jpg'):
 	# matchLoc = maxLoc
 	# print("verify_maxVal: ", maxVal)
 
-	cv2.rectangle(img, matchLoc, (matchLoc[0] + 12, matchLoc[1] + 20), (0,255,255), 2, 8, 0 )
+	cv2.rectangle(img_color, matchLoc, (matchLoc[0] + 12, matchLoc[1] + 20), (255,255,0), 2, 8, 0 )
 
 	# cv2.imshow('Output', img)
-
 	# cv2.waitKey(0)
+	newFile = "tl/marked/{0}".format(os.path.basename(filepath))
+	cv2.imwrite(newFile, img_color)
+
 avg = total / ops
 print("average: ", avg)
 print("count: ", ops)
