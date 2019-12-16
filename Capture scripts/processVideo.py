@@ -11,9 +11,7 @@ use_mask = True
 match_method = cv2.TM_SQDIFF
 w, h = templ.shape[:2]
 
-
-
-vidcap = cv2.VideoCapture('screen_records/rec1.mp4')
+vidcap = cv2.VideoCapture('screen_records/rec4.mp4')
 success,image = vidcap.read()
 count = 0
 
@@ -38,8 +36,16 @@ while success and count < 5:
 
     cursor = image[matchLoc[1]: matchLoc[1] + 20, matchLoc[0]:matchLoc[0] + 12]
 
-    cv2.rectangle(image, matchLoc, (matchLoc[0] + 12, matchLoc[1] + 20), (0,255,255), 2, 8, 0 )
-    cv2.imwrite("screen_records/rec1/frame%d.jpg" % count, image)     # save frame as JPEG file
+    cv2.rectangle(image, matchLoc, (matchLoc[0] + 12, matchLoc[1] + 20), (255,255,0), 2, 8, 0 )
+    cv2.imwrite("screen_records/rec4/frame%d.jpg" % count, image)     # save frame as JPEG file
 
     success,image = vidcap.read()
     count += 1
+
+# # 1) Check if 2 images are equals
+# if original.shape == duplicate.shape:
+# print("The images have same size and channels")
+# difference = cv2.subtract(original, duplicate)
+# b, g, r = cv2.split(difference)
+# if cv2.countNonZero(b) == 0 and cv2.countNonZero(g) == 0 and cv2.countNonZero(r) == 0:
+# print("The images are completely Equal")
